@@ -1,176 +1,264 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>LMC | </title>
+<title>LMC | Gaming Profile</title>
 
-<!-- 🔐 Steam Safe Meta (KEEP) -->
-
+<!-- 🔐 Steam Safe Meta -->
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="index, follow">
 <meta name="referrer" content="no-referrer-when-downgrade">
 <meta name="theme-color" content="#05070c">
-<meta name="description" content="LMC Dark Gaming Music Profile | Steam Safe | GitHub Pages">
+<meta name="description" content="LMC Dark Neon Gaming Profile | Steam Safe">
 <meta property="og:type" content="website">
-<meta property="og:title" content="LMC Gaming Profile">
-<meta property="og:description" content="Dark Neon Gaming profile with advanced music player">
+<meta property="og:title" content="LMC Gaming">
+<meta property="og:description" content="Cyber Gaming Profile with Music Player">
 <meta property="og:image" content="bg.jpg">
-<meta http-equiv="Content-Security-Policy" content="default-src * data: blob: 'unsafe-inline' 'unsafe-eval'">
+<meta http-equiv="Content-Security-Policy"
+content="default-src * data: blob: 'unsafe-inline' 'unsafe-eval'">
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 
 <style>
-*{box-sizing:border-box;font-family:'Segoe UI',sans-serif}
-body{margin:0;color:#fff;min-height:100vh;background:#000;overflow-x:hidden}
+*{box-sizing:border-box;font-family:Segoe UI,sans-serif}
+body{
+margin:0;color:#fff;background:#000;
+min-height:100vh;overflow-x:hidden
+}
 
 /* Background */
-.bg{position:fixed;inset:0;background:url('bg.jpg') center/cover no-repeat;filter:blur(8px) brightness(.55);z-index:-3}
-.overlay{position:fixed;inset:0;background:radial-gradient(circle at top,#00ffff33,#000d);z-index:-2}
+.bg{
+position:fixed;inset:0;
+background:url('bg.jpg') center/cover no-repeat;
+filter:blur(7px) brightness(.55);
+z-index:-3
+}
+.overlay{
+position:fixed;inset:0;
+background:
+radial-gradient(circle at top,#00ffff22,#000c),
+linear-gradient(180deg,#0000,#000);
+z-index:-2
+}
 
-/* Rain FX */
-canvas#rain{position:fixed;inset:0;z-index:-1}
-
-.container{max-width:1100px;margin:auto;padding:30px}
+/* Rain Canvas */
+#rain{
+position:fixed;inset:0;z-index:-1
+}
 
 /* Steam Button */
-.steam-btn{position:fixed;top:20px;right:20px;z-index:10;padding:12px 18px;border-radius:40px;background:linear-gradient(45deg,#00ffff,#0066ff);color:#000;font-weight:bold;text-decoration:none;box-shadow:0 0 30px #00ffffaa;transition:.3s}
-.steam-btn:hover{transform:scale(1.1)}
+.steam-btn{
+position:fixed;top:20px;right:20px;
+padding:12px 18px;border-radius:40px;
+background:linear-gradient(45deg,#0ff,#06f);
+color:#000;font-weight:bold;text-decoration:none;
+box-shadow:0 0 25px #0ff;
+z-index:10
+}
+
+/* Layout */
+.container{
+max-width:1100px;margin:auto;padding:30px
+}
 
 /* Player */
-.player{background:#060a14ee;border-radius:30px;padding:30px;text-align:center;box-shadow:0 0 60px #00ffff55}
-.player h1{letter-spacing:3px;margin:0 0 15px}
+.player{
+background:#060b15cc;
+border-radius:25px;
+padding:25px;
+text-align:center;
+box-shadow:0 0 40px #0ff6;
+transition:.2s
+}
+.player.glow{
+box-shadow:0 0 60px #0ff
+}
 
-.now-playing{font-size:14px;color:#aaa;margin-bottom:10px}
+.controls i{
+font-size:32px;margin:15px;
+cursor:pointer;color:#0ff
+}
+.controls i:hover{transform:scale(1.3)}
 
-.controls{display:flex;justify-content:center;align-items:center;gap:25px;margin:15px 0}
-.controls i{font-size:32px;cursor:pointer;color:#00ffff;transition:.3s}
-.controls i:hover{transform:scale(1.35);color:#fff}
+.progress{
+width:100%;height:8px;
+background:#111;border-radius:10px;
+cursor:pointer
+}
+.bar{
+height:100%;width:0%;
+background:linear-gradient(90deg,#0ff,#06f);
+border-radius:10px
+}
 
-.progress{width:100%;height:8px;background:#111;border-radius:10px;overflow:hidden;cursor:pointer;margin:15px 0}
-.progress span{display:block;height:100%;width:0;background:linear-gradient(90deg,#00ffff,#0066ff)}
+.time{font-size:12px;color:#aaa}
 
-.time{display:flex;justify-content:space-between;font-size:12px;color:#aaa}
+.volume{width:160px;margin-top:10px}
 
-.volume-wrap{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:10px}
-.volume-wrap input{width:140px}
+/* About */
+.about{
+margin-top:40px;
+background:#070a12ee;
+border-radius:25px;
+padding:25px;
+box-shadow:0 0 35px #0ff5
+}
+.about h2{text-align:center}
 
-/* Playlist */
-.playlist{margin-top:20px;text-align:left}
-.playlist div{padding:10px 14px;border-radius:15px;background:#0b1020;margin:6px 0;cursor:pointer;transition:.3s;display:flex;align-items:center;gap:10px}
-.playlist div.active{background:#00ffff22;color:#00ffff}
-.playlist div:hover{transform:translateX(6px)}
+.field{
+display:flex;align-items:center;
+margin:10px 0
+}
+.field i{
+width:28px;color:#0ff
+}
 
-/* Visualizer */
-#visualizer{width:100%;height:120px;margin-top:20px;border-radius:20px;background:#05070c;box-shadow:0 0 30px #00ffff55}
-
-@media(max-width:600px){.controls i{font-size:26px}}
+/* Particle Cursor */
+.p{
+position:fixed;width:6px;height:6px;
+background:#0ff;border-radius:50%;
+pointer-events:none;opacity:.8
+}
 </style>
-
 </head>
 
-<body onclick="unlockAudio()">
+<body onclick="unlock()">
 
 <div class="bg"></div>
 <div class="overlay"></div>
 <canvas id="rain"></canvas>
 
-<a class="steam-btn" target="_blank" href="https://steamcommunity.com/id/M_LMC/"><i class="fab fa-steam"></i> Add Friend</a>
+<a class="steam-btn" target="_blank"
+href="https://steamcommunity.com/id/M_LMC/">
+<i class="fab fa-steam"></i> Add Friend
+</a>
 
-<div class="container">
+<div class="container" id="scene">
 
-<div class="player" id="scene">
-<h1>LMC PLAYER</h1>
-<div class="now-playing" id="now">--</div>
+<!-- Player -->
+<div class="player" id="player">
+<h1>LMC MUSIC</h1>
 
 <audio id="audio" autoplay muted></audio>
 
 <div class="controls">
 <i class="fa fa-backward" onclick="prev()"></i>
-<i class="fa fa-play" onclick="togglePlay()"></i>
+<i class="fa fa-play" onclick="playMusic()"></i>
 <i class="fa fa-forward" onclick="next()"></i>
 </div>
 
-<div class="progress" onclick="seek(event)"><span id="bar"></span></div>
-<div class="time"><span id="cur">0:00</span><span id="dur">0:00</span></div>
+<div class="progress" onclick="seek(event)">
+<div class="bar" id="bar"></div>
+</div>
+<div class="time" id="time">0:00 / 0:00</div>
 
-<div class="volume-wrap">
-<i class="fa fa-volume-high"></i>
-<input type="range" min="0" max="1" step="0.01" onchange="audio.volume=this.value">
+<input class="volume" type="range" min="0" max="1"
+step="0.01" onchange="audio.volume=this.value">
 </div>
 
-<canvas id="visualizer"></canvas>
-
-<div class="playlist" id="list"></div>
+<!-- About -->
+<div class="about">
+<h2>About Me</h2>
+<div class="field"><i class="fa fa-user"></i> Age: 20</div>
+<div class="field"><i class="fa fa-clock"></i> Timeplay CS: 800h</div>
+<div class="field"><i class="fa fa-ranking-star"></i> Rank: 12000</div>
+<div class="field"><i class="fa fa-gamepad"></i> Games: 12</div>
+<div class="field"><i class="fa fa-layer-group"></i> Steam Level: 22</div>
+<div class="field"><i class="fa fa-location-dot"></i> Iran / Markazi / Khomain</div>
+<div class="field"><i class="fab fa-discord"></i> @mahdiyar_lmc</div>
+<div class="field"><i class="fa fa-quote-left"></i> داریوشم ولی بی‌اقبال</div>
 </div>
+
 </div>
 
 <script>
-/* Playlist */
+/* Tracks */
 const tracks=[
-{title:'Mvshreghi - Vasam Ajib Bood',src:'https://dl.godpori.com/04/05/Mvshreghi%20-%20Vasam%20Ajib%20Bood%20[128].mp3'},
-{title:'Mvshreghi - Adhd',src:'https://dl.bandmusic.ir/files/mp3/s1/01%20Mvshreghi%20-%20Adhd.mp3'}
+'https://dl.godpori.com/04/05/Mvshreghi%20-%20Vasam%20Ajib%20Bood%20[128].mp3',
+'https://dl.bandmusic.ir/files/mp3/s1/01%20Mvshreghi%20-%20Adhd.mp3'
 ];
-
+let i=0;
 const audio=document.getElementById('audio');
-const now=document.getElementById('now');
-const list=document.getElementById('list');
-const bar=document.getElementById('bar');
-let index=0,playing=false;
+audio.src=tracks[i];
 
-tracks.forEach((t,i)=>{
-const d=document.createElement('div');
-d.innerHTML='<i class="fa fa-music"></i>'+t.title;
-d.onclick=()=>loadTrack(i,true);
-list.appendChild(d);
-});
-
-function loadTrack(i,play){
-index=i;
-audio.src=tracks[i].src;
-now.innerText=tracks[i].title;
-[...list.children].forEach((e,n)=>e.classList.toggle('active',n===i));
-if(play) audio.play();
+/* Unlock */
+function unlock(){
+audio.muted=false;
+audio.play();
 }
-loadTrack(0,false);
 
-function togglePlay(){playing?audio.pause():audio.play();}
-audio.onplay=()=>playing=true;
-audio.onpause=()=>playing=false;
-function next(){loadTrack((index+1)%tracks.length,true)}
-function prev(){loadTrack((index-1+tracks.length)%tracks.length,true)}
+/* Controls */
+function playMusic(){audio.play()}
+function next(){i=(i+1)%tracks.length;audio.src=tracks[i];audio.play()}
+function prev(){i=(i-1+tracks.length)%tracks.length;audio.src=tracks[i];audio.play()}
 
-function seek(e){audio.currentTime=(e.offsetX/e.target.offsetWidth)*audio.duration}
+/* Progress */
 audio.ontimeupdate=()=>{
-bar.style.width=(audio.currentTime/audio.duration*100||0)+'%';
-cur.innerText=format(audio.currentTime);
-dur.innerText=format(audio.duration);
+const p=(audio.currentTime/audio.duration)*100;
+bar.style.width=p+'%';
+time.innerText=
+`${Math.floor(audio.currentTime/60)}:${Math.floor(audio.currentTime%60).toString().padStart(2,'0')} /
+${Math.floor(audio.duration/60)||0}:${Math.floor(audio.duration%60||0).toString().padStart(2,'0')}`;
 }
-function format(t){if(!t)return'0:00';let m=Math.floor(t/60);let s=Math.floor(t%60);return m+':'+('0'+s).slice(-2)}
 
-function unlockAudio(){audio.muted=false}
+/* Seek */
+function seek(e){
+const r=e.target.getBoundingClientRect();
+audio.currentTime=((e.clientX-r.left)/r.width)*audio.duration;
+}
 
-/* Visualizer */
-const v=document.getElementById('visualizer');
-const vctx=v.getContext('2d');
-v.width=v.offsetWidth;v.height=v.offsetHeight;
-const AC=window.AudioContext||window.webkitAudioContext;
-const ac=new AC();
-const src=ac.createMediaElementSource(audio);
-const an=ac.createAnalyser();
-an.fftSize=128;src.connect(an);an.connect(ac.destination);
-const data=new Uint8Array(an.frequencyBinCount);
-function vis(){requestAnimationFrame(vis);an.getByteFrequencyData(data);vctx.clearRect(0,0,v.width,v.height);
-data.forEach((d,i)=>{let h=d/2;vctx.fillStyle='#00ffff';vctx.fillRect(i*10,v.height-h,8,h)})}
-vis();
+/* Camera Shake + Glow */
+setInterval(()=>{
+if(!audio.paused){
+scene.style.transform=
+`translate(${(Math.random()-.5)*3}px,${(Math.random()-.5)*3}px)`;
+player.classList.add('glow');
+}else{
+player.classList.remove('glow');
+}
+},120);
 
-/* Rain FX */
-const r=document.getElementById('rain');const rctx=r.getContext('2d');
-r.width=innerWidth;r.height=innerHeight;
-const drops=Array(200).fill().map(()=>({x:Math.random()*r.width,y:Math.random()*r.height,l:Math.random()*20+10,s:Math.random()*4+2}));
-function rain(){rctx.clearRect(0,0,r.width,r.height);rctx.strokeStyle='rgba(0,255,255,.6)';drops.forEach(d=>{rctx.beginPath();rctx.moveTo(d.x,d.y);rctx.lineTo(d.x,d.y+d.l);rctx.stroke();d.y+=d.s;if(d.y>r.height){d.y=-20;d.x=Math.random()*r.width}});requestAnimationFrame(rain)}
+/* Rain + Splash */
+const c=document.getElementById('rain');
+const x=c.getContext('2d');
+c.width=innerWidth;c.height=innerHeight;
+const drops=[];
+for(let i=0;i<200;i++)
+drops.push({x:Math.random()*c.width,y:Math.random()*c.height,s:2+Math.random()*3});
+
+function rain(){
+x.clearRect(0,0,c.width,c.height);
+x.strokeStyle='#0ff';
+drops.forEach(d=>{
+x.beginPath();
+x.moveTo(d.x,d.y);
+x.lineTo(d.x,d.y+10);
+x.stroke();
+d.y+=d.s;
+if(d.y>c.height){
+for(let i=0;i<5;i++){
+x.beginPath();
+x.arc(d.x,d.y,Math.random()*6,0,Math.PI*2);
+x.stroke();
+}
+d.y=0;
+}
+});
+requestAnimationFrame(rain);
+}
 rain();
+
+/* Cursor */
+addEventListener('mousemove',e=>{
+const p=document.createElement('div');
+p.className='p';
+p.style.left=e.clientX+'px';
+p.style.top=e.clientY+'px';
+document.body.appendChild(p);
+setTimeout(()=>p.remove(),300);
+});
 </script>
 
 </body>
