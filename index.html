@@ -2,67 +2,61 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>||LMC||</title>
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>LMC </title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="robots" content="index, follow">
-<meta name="referrer" content="no-referrer">
-<meta name="theme-color" content="#05070c">
 <meta name="description" content="LMC Dark Gaming Music Profile | Steam Safe | GitHub Pages">
-
-<meta property="og:type" content="website">
-<meta property="og:title" content="LMC Gaming">
-<meta property="og:description" content="Dark Neon Gaming profile with music player">
-<meta property="og:image" content="bg.jpg">
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 
 <style>
-*{box-sizing:border-box;font-family:Segoe UI,sans-serif;margin:0;padding:0;}
-body{color:#fff;min-height:100vh;background:#000;overflow:hidden}
-.bg{position:fixed;inset:0;background:url('bg.jpg') center/cover no-repeat;filter:blur(6px) brightness(.6);z-index:-3}
-.overlay{position:fixed;inset:0;background:radial-gradient(circle,#00ffff22,#000c);z-index:-2}
+*{margin:0;padding:0;box-sizing:border-box;font-family: 'Segoe UI', sans-serif;}
+body{background:#0a0a0a;color:#fff;overflow:hidden;min-height:100vh;}
+a{color:inherit;text-decoration:none;transition:.3s;}
+h1,h2,h3{margin:0;}
 
-/* HUD Frame */
-.hud{border:2px solid #00ffff55;border-radius:25px;padding:25px;box-shadow:0 0 40px #00ffff33;background:#05070cdd;position:relative;transition:transform .2s}
+/* Background */
+.bg{position:fixed;inset:0;background:url('bg.jpg') center/cover no-repeat;filter:blur(8px) brightness(.5);z-index:-3;}
+.overlay{position:fixed;inset:0;background:radial-gradient(circle,#00ffff22,#000c);z-index:-2;}
 
 /* Steam Button */
-.steam-btn{position:fixed;top:20px;right:20px;padding:12px 18px;border-radius:40px;background:linear-gradient(45deg,#00ffff,#0066ff);color:#000;font-weight:bold;text-decoration:none;box-shadow:0 0 25px #00ffff;z-index:10;transition:.3s}
-.steam-btn:hover{transform:scale(1.05)}
+.steam-btn{position:fixed;top:20px;right:20px;padding:12px 20px;border-radius:50px;background:linear-gradient(45deg,#00ffff,#0066ff);font-weight:bold;color:#000;box-shadow:0 0 25px #00ffff;z-index:10;display:flex;align-items:center;gap:8px;}
+.steam-btn:hover{transform:scale(1.1);}
 
-/* Layout */
-.container{max-width:1100px;margin:auto;padding:30px}
+/* EQ */
+.eq{position:fixed;top:0;bottom:0;width:50px;display:flex;flex-direction:column;justify-content:center;gap:5px;z-index:1;}
+.eq span{flex:1;background:#00ffff;opacity:.2;border-radius:5px;transition:.1s;}
+.eq.left{left:0;}
+.eq.right{right:0;}
+
+/* Container */
+.container{max-width:1100px;margin:auto;padding:40px;display:flex;flex-direction:column;gap:30px;}
+
+/* HUD */
+.hud{background:rgba(5,7,12,.95);border:2px solid #00ffff55;border-radius:30px;padding:30px;box-shadow:0 0 50px #00ffff33;position:relative;backdrop-filter:blur(5px);transition:transform .2s;}
 
 /* Player */
-.player h1{margin-bottom:10px;letter-spacing:3px}
-.controls i{font-size:30px;margin:15px;cursor:pointer;color:#00ffff;transition:.3s}
+.player h1{font-size:2rem;color:#00ffff;text-shadow:0 0 10px #00ffff,0 0 20px #00ffff55;margin-bottom:20px;letter-spacing:4px;}
+.controls{display:flex;align-items:center;justify-content:center;gap:25px;margin-bottom:15px;}
+.controls i{font-size:35px;cursor:pointer;color:#00ffff;transition:.3s;filter:drop-shadow(0 0 5px #00ffff);}
 .controls i:hover{transform:scale(1.5) rotate(-10deg);}
-.volume{width:180px;margin-top:10px;cursor:pointer}
-
-/* Playlist */
-.playlist div{display:flex;align-items:center;gap:10px;cursor:pointer;margin:6px 0;padding:6px;border-radius:10px;transition:.3s}
-.playlist div:hover{background:#00ffff22}
-.playlist i{color:#00ffff}
+.volume{width:200px;margin:auto;display:block;cursor:pointer;margin-bottom:20px;height:6px;border-radius:5px;accent-color:#00ffff;}
+.playlist div{display:flex;align-items:center;gap:10px;padding:8px;border-radius:12px;cursor:pointer;transition:.3s;filter:drop-shadow(0 0 5px #00ffff);}
+.playlist div:hover{background:#00ffff22;}
+.playlist i{color:#00ffff;}
 
 /* About */
-.about{margin-top:35px;background:#070a12ee;border-radius:25px;padding:25px}
-.field{display:flex;align-items:center;margin:10px 0}
-.field i{width:30px;color:#00ffff}
+.about{background:rgba(7,10,18,.95);border-radius:25px;padding:25px;box-shadow:0 0 30px #00ffff33;}
+.about h2{color:#00ffff;text-shadow:0 0 8px #00ffff,0 0 20px #00ffff55;margin-bottom:15px;}
+.field{display:flex;align-items:center;margin:8px 0;}
+.field i{width:30px;color:#00ffff;}
 
-/* Visualizer */
-#viz{width:100%;height:140px;border-radius:15px;box-shadow:0 0 20px #00ffff44}
+/* Canvas */
+#viz{width:100%;height:160px;border-radius:15px;box-shadow:0 0 25px #00ffff44;background:rgba(0,0,0,.2);}
 
-/* Side EQ */
-.eq{position:fixed;top:0;bottom:0;width:60px;display:flex;flex-direction:column;justify-content:center;gap:6px;z-index:1}
-.eq.left{left:0}
-.eq.right{right:0}
-.eq span{flex:1;background:#00ffff;opacity:.2;border-radius:6px;transition:.1s}
-
-/* Rain Drops */
-.drop{position:fixed;width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.25);backdrop-filter:blur(2px);box-shadow:inset -2px -2px 6px rgba(255,255,255,.4);pointer-events:none;transition:top .016s linear;}
+/* Rain */
+.drop{position:fixed;width:12px;height:12px;border-radius:50%;background:rgba(0,255,255,.2);backdrop-filter:blur(2px);box-shadow:inset -2px -2px 6px rgba(0,255,255,.4);pointer-events:none;}
 </style>
 </head>
-
 <body>
 
 <div class="bg"></div>
@@ -78,9 +72,10 @@ body{color:#fff;min-height:100vh;background:#000;overflow:hidden}
 <div class="container">
 <div class="hud" id="scene">
 
+<!-- Player -->
 <div class="player">
 <h1>LMC MUSIC</h1>
-<audio id="audio" autoplay muted></audio>
+<audio id="audio" muted></audio>
 
 <div class="controls">
 <i class="fa fa-backward" onclick="prev()"></i>
@@ -88,7 +83,7 @@ body{color:#fff;min-height:100vh;background:#000;overflow:hidden}
 <i class="fa fa-forward" onclick="next()"></i>
 </div>
 
-<input class="volume" type="range" min="0" max="1" step="0.01" oninput="audio.volume=this.value">
+<input type="range" class="volume" min="0" max="1" step="0.01" oninput="audio.volume=this.value">
 
 <div class="playlist">
 <div onclick="setTrack(0)"><i class="fa fa-music"></i> Vasam Ajib Bood</div>
@@ -98,6 +93,7 @@ body{color:#fff;min-height:100vh;background:#000;overflow:hidden}
 <canvas id="viz"></canvas>
 </div>
 
+<!-- About -->
 <div class="about">
 <h2>About Me</h2>
 <div class="field"><i class="fa fa-user"></i>Age: 20</div>
@@ -115,83 +111,95 @@ body{color:#fff;min-height:100vh;background:#000;overflow:hidden}
 </div>
 
 <script>
-// 🎵 موزیک‌ها
-const tracks=[
+// 🎵 موزیک‌ها (داخل ریپو GitHub Pages)
+const tracks = [
   'music/Vasam_Ajib_Bood.mp3',
   'music/Adhd.mp3'
 ];
-let idx=0;
-const audio=document.getElementById('audio');
-audio.src=tracks[idx];
+let idx = 0;
+const audio = document.getElementById('audio');
+audio.src = tracks[idx];
 
-// 🎚 Audio Context + Visualizer
-const AC=window.AudioContext||window.webkitAudioContext;
-const ctx=new AC();
-const srcNode=ctx.createMediaElementSource(audio);
-const analyser=ctx.createAnalyser();
-analyser.fftSize=128;
+// Audio Context + Visualizer
+const AC = window.AudioContext || window.webkitAudioContext;
+const ctx = new AC();
+const srcNode = ctx.createMediaElementSource(audio);
+const analyser = ctx.createAnalyser();
+analyser.fftSize = 256;
 srcNode.connect(analyser);
 analyser.connect(ctx.destination);
 
-const playBtn=document.getElementById('playBtn');
-let isPlaying=false;
+// Play/Pause
+const playBtn = document.getElementById('playBtn');
+let isPlaying = false;
+playBtn.onclick = () => {isPlaying ? pauseMusic() : playMusic();}
 
 function playMusic(){
   ctx.resume().then(()=>{
     audio.play();
-    isPlaying=true;
-    playBtn.classList.remove('fa-play');
-    playBtn.classList.add('fa-pause');
+    isPlaying = true;
+    playBtn.classList.replace('fa-play','fa-pause');
   });
 }
 
 function pauseMusic(){
   audio.pause();
-  isPlaying=false;
-  playBtn.classList.remove('fa-pause');
-  playBtn.classList.add('fa-play');
+  isPlaying = false;
+  playBtn.classList.replace('fa-pause','fa-play');
 }
 
-playBtn.onclick=()=>{isPlaying?pauseMusic():playMusic();}
-
+// Tracks
 function setTrack(i){
-  idx=i;
-  audio.src=tracks[i];
+  idx = i;
+  audio.src = tracks[i];
   playMusic();
 }
+function next(){setTrack((idx+1)%tracks.length);}
+function prev(){setTrack((idx-1+tracks.length)%tracks.length);}
 
-function next(){setTrack((idx+1)%tracks.length)}
-function prev(){setTrack((idx-1+tracks.length)%tracks.length)}
-
-// 🎨 Visualizer
-const c=document.getElementById('viz');
-const g=c.getContext('2d');
+// Canvas Visualizer (Sine Wave + Glow)
+const c = document.getElementById('viz');
+const g = c.getContext('2d');
 function resizeCanvas(){c.width=c.offsetWidth;c.height=c.offsetHeight;}
 window.addEventListener('resize',resizeCanvas);
 resizeCanvas();
-
-const data=new Uint8Array(analyser.frequencyBinCount);
+const data = new Uint8Array(analyser.frequencyBinCount);
 
 function draw(){
   requestAnimationFrame(draw);
   analyser.getByteFrequencyData(data);
   g.clearRect(0,0,c.width,c.height);
-  let bass=0;
+
+  // سینوسی رنگی
+  g.beginPath();
+  const midY = c.height/2;
+  g.moveTo(0, midY);
   for(let i=0;i<data.length;i++){
-    let h=data[i];
-    if(i<6) bass+=h;
-    g.fillStyle=`hsl(${i*15},100%,50%)`;
-    g.fillRect(i*10,c.height-h/2,8,h/2);
+    const x = i*(c.width/data.length);
+    const y = midY + Math.sin(i*0.5 + performance.now()*0.005)*30 + data[i]/3;
+    g.lineTo(x,y);
   }
-  let s=bass/300;
-  scene.style.transform=`translate(${(Math.random()-.5)*s}px,${(Math.random()-.5)*s}px)`;
+  g.strokeStyle=`hsl(${performance.now()/10 % 360},100%,50%)`;
+  g.lineWidth=3;
+  g.shadowColor='#00ffff';
+  g.shadowBlur=15;
+  g.stroke();
+  g.closePath();
+
+  // HUD shake
+  let bass = 0;
+  for(let i=0;i<6;i++) bass += data[i];
+  let s = bass/300;
+  scene.style.transform = `translate(${(Math.random()-.5)*s}px,${(Math.random()-.5)*s}px)`;
+
+  // EQ
   updateEQ(data);
 }
 draw();
 
-// 🎛 EQ
-const eqL=document.getElementById('eqL');
-const eqR=document.getElementById('eqR');
+// EQ
+const eqL = document.getElementById('eqL');
+const eqR = document.getElementById('eqR');
 for(let i=0;i<12;i++){eqL.appendChild(document.createElement('span')); eqR.appendChild(document.createElement('span'));}
 function updateEQ(freqData){
   [...eqL.children,...eqR.children].forEach((e,i)=>{
@@ -200,18 +208,18 @@ function updateEQ(freqData){
   });
 }
 
-// 🌧 Rain
+// Rain
 setInterval(()=>{
-  const d=document.createElement('div');
+  const d = document.createElement('div');
   d.className='drop';
-  d.style.left=Math.random()*window.innerWidth+'px';
-  d.style.top='-20px';
+  d.style.left = Math.random()*window.innerWidth+'px';
+  d.style.top = '-20px';
   document.body.appendChild(d);
   let y=-20;
-  const fall=requestAnimationFrame(function animate(){
-    y+=Math.random()*4+2;
-    d.style.top=y+'px';
-    if(y<window.innerHeight) requestAnimationFrame(animate);
+  const fall = requestAnimationFrame(function animate(){
+    y += Math.random()*4+2;
+    d.style.top = y+'px';
+    if(y < window.innerHeight) requestAnimationFrame(animate);
     else d.remove();
   });
 },100);
