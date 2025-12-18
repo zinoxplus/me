@@ -4,191 +4,227 @@
 <meta charset="UTF-8">
 <title>LMC | Gaming HUD</title>
 
+<!-- 🔐 Steam Safe Meta -->
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="LMC Dark Gaming Profile | FPS HUD | Steam Safe">
+<meta name="robots" content="index, follow">
+<meta name="referrer" content="no-referrer-when-downgrade">
+<meta name="theme-color" content="#05070c">
+<meta name="description" content="LMC Cyber Gaming Profile | Steam Safe">
+<meta property="og:type" content="website">
+<meta property="og:title" content="LMC Gaming HUD">
+<meta property="og:image" content="bg.jpg">
+<meta http-equiv="Content-Security-Policy"
+content="default-src * data: blob: 'unsafe-inline' 'unsafe-eval'">
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 
 <style>
-*{box-sizing:border-box;font-family:Segoe UI,sans-serif;}
-body{margin:0;background:#000;color:#fff;overflow:hidden;}
+*{box-sizing:border-box;font-family:Segoe UI,sans-serif}
+body{
+margin:0;background:#000;color:#fff;
+overflow-x:hidden
+}
 
-/* ===== Background ===== */
-.bg{position:fixed;inset:0;background:url('bg.jpg') center/cover no-repeat;filter:blur(6px) brightness(.7);z-index:-3;}
-.overlay{position:fixed;inset:0;background:radial-gradient(circle at top,#00ffff22,#000c);z-index:-2;}
+/* Background Image (Clear) */
+.bg{
+position:fixed;inset:0;
+background:url('bg.jpg') center/contain no-repeat;
+opacity:.35;
+z-index:-4
+}
 
-/* ===== HUD ===== */
-.hud{position:fixed;top:0;left:0;right:0;bottom:0;border:2px solid #00ffff55;border-radius:18px;pointer-events:none;box-shadow:0 0 35px #00ffff33,inset 0 0 25px #00ffff22;}
-.hud::before,.hud::after{content:'';position:absolute;width:60px;height:60px;border:2px solid #00ffffaa;}
-.hud::before{top:-2px;left:-2px;border-right:none;border-bottom:none}
-.hud::after{bottom:-2px;right:-2px;border-left:none;border-top:none}
+/* Side Beat Glow */
+.side{
+position:fixed;top:0;bottom:0;width:15vw;
+background:radial-gradient(circle,#00ffff44,#000);
+z-index:-3;opacity:.6
+}
+.side.left{left:0}
+.side.right{right:0}
 
-/* ===== Steam Button ===== */
-.steam-btn{position:fixed;top:30px;right:30px;padding:12px 18px;border-radius:40px;background:linear-gradient(45deg,#0ff,#0066ff);color:#000;font-weight:bold;text-decoration:none;box-shadow:0 0 25px #0ff;z-index:10;}
+/* Rain Glass */
+#rain{
+position:fixed;inset:0;z-index:-2
+}
 
-/* ===== Container ===== */
-.container{max-width:1100px;margin:100px auto;padding:20px;display:flex;flex-direction:column;gap:30px;}
+/* Layout */
+.container{
+max-width:900px;margin:auto;padding:30px
+}
 
-/* ===== Player ===== */
-.player{background:#0b0f1add;border-radius:22px;padding:25px;text-align:center;box-shadow:0 0 45px #00ffff55;backdrop-filter:blur(10px);border:1px solid #00ffff55;}
-.player h2{margin-bottom:20px;}
-.controls i{font-size:30px;margin:15px;cursor:pointer;color:#00ffff;text-shadow:0 0 12px #00ffff;}
-.track{padding:10px;margin:6px 0;border-radius:10px;cursor:pointer;border:1px solid #00ffff22;}
-.track.active{background:#00ffff22;box-shadow:0 0 15px #00ffff;}
+/* Player HUD */
+.player{
+background:#050912ee;
+border-radius:20px;
+padding:25px;
+box-shadow:0 0 60px #0ff5;
+border:1px solid #0ff3
+}
+.player h1{margin:0;text-align:center}
 
-/* ===== EQ Side Bars ===== */
-.eq{position:fixed;top:0;bottom:0;width:50px;display:flex;flex-direction:column;justify-content:center;gap:5px;z-index:1;}
-.eq span{flex:1;background:#00ffff;opacity:.2;border-radius:5px;transition:.1s;}
-.eq.left{left:0;}
-.eq.right{right:0;}
+/* Controls */
+.controls{
+display:flex;justify-content:center;gap:25px;
+margin:15px 0
+}
+.controls i{
+font-size:30px;color:#0ff;
+cursor:pointer
+}
 
-/* ===== Canvas Visualizer ===== */
-#viz{width:100%;height:150px;border-radius:15px;background:rgba(0,0,0,0.2);box-shadow:0 0 25px #00ffff44;margin-top:15px;}
+/* Progress */
+.progress{
+height:8px;background:#111;
+border-radius:10px;cursor:pointer
+}
+.bar{
+height:100%;width:0%;
+background:linear-gradient(90deg,#0ff,#06f)
+}
+.time{font-size:12px;color:#aaa;text-align:center}
 
-/* ===== Rain ===== */
-#rain{position:fixed;inset:0;z-index:-1;}
+/* Playlist */
+.playlist{
+margin-top:15px
+}
+.track{
+padding:6px;cursor:pointer
+}
+.track.active{color:#0ff}
+
+/* About */
+.about{
+margin-top:30px;
+background:#060b15cc;
+border-radius:20px;
+padding:20px;
+border:1px solid #0ff3
+}
+.field{
+display:flex;align-items:center;margin:8px 0
+}
+.field i{width:25px;color:#0ff}
+
+/* Steam Button */
+.steam-btn{
+position:fixed;top:20px;right:20px;
+background:linear-gradient(45deg,#0ff,#06f);
+padding:12px 18px;border-radius:40px;
+color:#000;font-weight:bold;text-decoration:none
+}
 </style>
 </head>
-<body>
+
+<body onclick="unlock()">
 
 <div class="bg"></div>
-<div class="overlay"></div>
+<div class="side left"></div>
+<div class="side right"></div>
 <canvas id="rain"></canvas>
-<div class="hud"></div>
 
-<a class="steam-btn" target="_blank" href="https://steamcommunity.com/id/M_LMC/">
+<a class="steam-btn" target="_blank"
+href="https://steamcommunity.com/id/M_LMC/">
 <i class="fab fa-steam"></i> Add Friend
 </a>
 
-<div class="eq left" id="eqL"></div>
-<div class="eq right" id="eqR"></div>
+<div class="container" id="scene">
 
-<div class="container">
+<div class="player" id="player">
+<h1>LMC MUSIC HUD</h1>
 
-<div class="player">
-<h2>LMC MUSIC</h2>
-<audio id="audio" crossorigin="anonymous" muted></audio>
+<audio id="audio" autoplay muted></audio>
 
 <div class="controls">
 <i class="fa fa-backward" onclick="prev()"></i>
-<i class="fa fa-play" id="playBtn"></i>
+<i class="fa fa-play" onclick="playMusic()"></i>
+<i class="fa fa-stop" onclick="stopMusic()"></i>
 <i class="fa fa-forward" onclick="next()"></i>
 </div>
 
-<div class="track active" onclick="setTrack(0)">Mvshreghi - Vasam Ajib Bood</div>
-<div class="track" onclick="setTrack(1)">Mvshreghi - Adhd</div>
+<div class="progress" onclick="seek(event)">
+<div class="bar" id="bar"></div>
+</div>
+<div class="time" id="time">0:00 / 0:00</div>
 
-<canvas id="viz"></canvas>
+<input type="range" min="0" max="1" step="0.01"
+oninput="audio.volume=this.value">
+
+<div class="playlist">
+<div class="track active" onclick="setTrack(0)">
+Mvshreghi – Vasam Ajib Bood
+</div>
+<div class="track" onclick="setTrack(1)">
+Mvshreghi – Adhd
+</div>
+</div>
+</div>
+
+<div class="about">
+<div class="field"><i class="fa fa-user"></i>Age: 20</div>
+<div class="field"><i class="fa fa-clock"></i>Timeplay CS: 800h</div>
+<div class="field"><i class="fa fa-ranking-star"></i>Rank: 12000</div>
+<div class="field"><i class="fa fa-layer-group"></i>Steam Level: 22</div>
+<div class="field"><i class="fab fa-discord"></i>@mahdiyar_lmc</div>
+<div class="field"><i class="fa fa-quote-left"></i>داریوشم ولی بی‌اقبال</div>
 </div>
 
 </div>
 
 <script>
-/* ===== Audio ===== */
-const tracks = [
+/* Audio */
+const tracks=[
 'https://dl.godpori.com/04/05/Mvshreghi%20-%20Vasam%20Ajib%20Bood%20[128].mp3',
 'https://dl.bandmusic.ir/files/mp3/s1/01%20Mvshreghi%20-%20Adhd.mp3'
 ];
-let idx = 0;
-const audio = document.getElementById('audio');
-audio.src = tracks[idx];
-let unlocked = false;
-let ctx, analyser, srcNode;
-const playBtn = document.getElementById('playBtn');
-let isPlaying = false;
+let i=0;
+const audio=document.getElementById('audio');
+audio.src=tracks[i];
 
-// فعال کردن AudioContext بعد از تعامل کاربر
-function unlock(){
-  if(unlocked) return;
-  ctx = new (window.AudioContext||window.webkitAudioContext)();
-  srcNode = ctx.createMediaElementSource(audio);
-  analyser = ctx.createAnalyser();
-  analyser.fftSize = 128;
-  srcNode.connect(analyser);
-  analyser.connect(ctx.destination);
-  ctx.resume();
-  unlocked = true;
+function unlock(){audio.muted=false;audio.play()}
+function playMusic(){audio.play()}
+function stopMusic(){audio.pause();audio.currentTime=0}
+function next(){i=(i+1)%tracks.length;set()}
+function prev(){i=(i-1+tracks.length)%tracks.length;set()}
+function setTrack(n){i=n;set()}
+function set(){
+audio.src=tracks[i];audio.play();
+document.querySelectorAll('.track').forEach(t=>t.classList.remove('active'));
+document.querySelectorAll('.track')[i].classList.add('active');
 }
 
-// Play / Pause
-playBtn.onclick = ()=>{
-  unlock();
-  if(!isPlaying){audio.play(); isPlaying=true; playBtn.classList.replace('fa-play','fa-pause');}
-  else{audio.pause(); isPlaying=false; playBtn.classList.replace('fa-pause','fa-play');}
+/* Progress */
+audio.ontimeupdate=()=>{
+bar.style.width=(audio.currentTime/audio.duration*100)+'%';
 }
 
-// انتخاب ترک
-function setTrack(n){
-  idx = n;
-  audio.src = tracks[idx];
-  audio.play();
-  isPlaying=true;
-  playBtn.classList.replace('fa-play','fa-pause');
-  document.querySelectorAll('.track').forEach(t=>t.classList.remove('active'));
-  document.querySelectorAll('.track')[idx].classList.add('active');
-}
-function next(){setTrack((idx+1)%tracks.length);}
-function prev(){setTrack((idx-1+tracks.length)%tracks.length);}
+/* Rain Glass */
+const c=document.getElementById('rain');
+const x=c.getContext('2d');
+c.width=innerWidth;c.height=innerHeight;
+const drops=[];
+for(let i=0;i<120;i++)
+drops.push({x:Math.random()*c.width,y:Math.random()*c.height,s:2+Math.random()*4});
 
-/* ===== EQ ===== */
-const eqL = document.getElementById('eqL');
-const eqR = document.getElementById('eqR');
-for(let i=0;i<12;i++){eqL.appendChild(document.createElement('span')); eqR.appendChild(document.createElement('span'));}
-function updateEQ(data){
-  [...eqL.children,...eqR.children].forEach((e,i)=>{e.style.opacity=Math.min(1,data[i]*1.5/255); e.style.height = 10 + data[i]/3 + 'px';});
-}
-
-/* ===== Canvas Visualizer ===== */
-const viz = document.getElementById('viz');
-const g = viz.getContext('2d');
-function resizeCanvas(){viz.width=viz.offsetWidth; viz.height=viz.offsetHeight;}
-window.addEventListener('resize',resizeCanvas);
-resizeCanvas();
-const data = new Uint8Array(128);
-function draw(){
-  requestAnimationFrame(draw);
-  if(!unlocked) return;
-  analyser.getByteFrequencyData(data);
-  g.clearRect(0,0,viz.width,viz.height);
-
-  // سینوسی رنگی
-  g.beginPath();
-  const midY = viz.height/2;
-  g.moveTo(0, midY);
-  for(let i=0;i<data.length;i++){
-    const x=i*(viz.width/data.length);
-    const y=midY + Math.sin(i*0.5 + performance.now()*0.005)*30 + data[i]/3;
-    g.lineTo(x,y);
-  }
-  g.strokeStyle=`hsl(${performance.now()/10 % 360},100%,50%)`;
-  g.lineWidth=3;
-  g.shadowColor='#00ffff';
-  g.shadowBlur=15;
-  g.stroke();
-  g.closePath();
-
-  // آپدیت EQ
-  updateEQ(data);
-}
-draw();
-
-/* ===== Rain ===== */
-const canvas = document.getElementById('rain');
-const ctx2 = canvas.getContext('2d');
-function resize(){canvas.width=innerWidth; canvas.height=innerHeight;}
-window.addEventListener('resize',resize);
-resize();
-let drops=[];
-for(let j=0;j<160;j++){drops.push({x:Math.random()*innerWidth,y:Math.random()*innerHeight,r:Math.random()*2+1,s:Math.random()*4+2});}
 function rain(){
-ctx2.clearRect(0,0,canvas.width,canvas.height);
-ctx2.fillStyle='rgba(255,255,255,0.15)';
+x.clearRect(0,0,c.width,c.height);
+x.strokeStyle='#0ff';
 drops.forEach(d=>{
-ctx2.beginPath();
-ctx2.arc(d.x,d.y,d.r,0,Math.PI*2); ctx2.fill();
-d.y+=d.s; if(d.y>canvas.height){d.y=-5; d.x=Math.random()*canvas.width;}
+x.beginPath();
+x.moveTo(d.x,d.y);
+x.lineTo(d.x,d.y+14);
+x.stroke();
+d.y+=d.s;
+if(d.y>c.height){
+x.beginPath();
+x.arc(d.x,c.height,8,0,Math.PI*2);
+x.stroke();
+d.y=0;
+}
 });
-requestAnimationFrame(rain);}
+requestAnimationFrame(rain);
+}
 rain();
 </script>
 
