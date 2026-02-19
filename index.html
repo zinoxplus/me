@@ -2,230 +2,172 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title> || LMC || </title>
-
-<!-- 🔐 Steam Safe Meta -->
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>LMC || VOID</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="robots" content="index, follow">
-<meta name="referrer" content="no-referrer-when-downgrade">
-<meta name="theme-color" content="#05070c">
-<meta name="description" content="LMC Cyber Gaming Profile | Steam Safe">
-<meta property="og:type" content="website">
-<meta property="og:title" content="LMC Gaming HUD">
-<meta property="og:image" content="bg.jpg">
-<meta http-equiv="Content-Security-Policy"
-content="default-src * data: blob: 'unsafe-inline' 'unsafe-eval'">
 
 <link rel="stylesheet"
 href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 
 <style>
-*{box-sizing:border-box;font-family:Segoe UI,sans-serif}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Segoe UI,sans-serif}
+
 body{
-margin:0;background:#000;color:#fff;
-overflow-x:hidden
+background:#000;
+color:#aaa;
+overflow:hidden;
 }
 
-/* Background Image (Clear) */
+/* 🔥 Ultra Dark Overlay */
+body::before{
+content:"";
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.88);
+z-index:-2;
+}
+
+/* 🐦 Crow GIF Background */
 .bg{
-position:fixed;inset:0;
-background:url('bg.jpg') center/contain no-repeat;
-opacity:.35;
-z-index:-4
+position:fixed;
+inset:0;
+background:url('https://i.pinimg.com/originals/c8/cc/44/c8cc44d4a558a872b28b82cc738c3d39.gif') center/cover no-repeat;
+filter:brightness(.4) contrast(1.2);
+z-index:-3;
 }
 
-/* Side Beat Glow */
-.side{
-position:fixed;top:0;bottom:0;width:15vw;
-background:radial-gradient(circle,#00ffff44,#000);
-z-index:-3;opacity:.6
-}
-.side.left{left:0}
-.side.right{right:0}
-
-/* Rain Glass */
-#rain{
-position:fixed;inset:0;z-index:-2
-}
-
-/* Layout */
-.container{
-max-width:900px;margin:auto;padding:30px
-}
-
-/* Player HUD */
-.player{
-background:#050912ee;
-border-radius:20px;
+/* 🎯 HUD Container */
+.hud{
+position:absolute;
+bottom:40px;
+left:50%;
+transform:translateX(-50%);
+width:800px;
+background:rgba(5,5,8,.95);
+border:1px solid #111;
+border-radius:8px;
 padding:25px;
-box-shadow:0 0 60px #0ff5;
-border:1px solid #0ff3
+box-shadow:0 0 40px #000;
 }
-.player h1{margin:0;text-align:center}
+
+/* Title */
+.hud h1{
+text-align:center;
+letter-spacing:6px;
+font-weight:300;
+color:#fff;
+margin-bottom:20px;
+}
+
+/* Audio Bar */
+.progress{
+height:6px;
+background:#111;
+border-radius:4px;
+overflow:hidden;
+margin-bottom:15px;
+}
+.bar{
+height:100%;
+width:0%;
+background:#0f0;
+}
 
 /* Controls */
 .controls{
-display:flex;justify-content:center;gap:25px;
-margin:15px 0
+display:flex;
+justify-content:center;
+gap:40px;
+font-size:22px;
+color:#777;
 }
 .controls i{
-font-size:30px;color:#0ff;
-cursor:pointer
+cursor:pointer;
+transition:.3s;
+}
+.controls i:hover{
+color:#0f0;
 }
 
-/* Progress */
-.progress{
-height:8px;background:#111;
-border-radius:10px;cursor:pointer
+/* Info Panel */
+.info{
+margin-top:20px;
+display:flex;
+justify-content:space-between;
+font-size:13px;
+color:#555;
+border-top:1px solid #111;
+padding-top:15px;
 }
-.bar{
-height:100%;width:0%;
-background:linear-gradient(90deg,#0ff,#06f)
-}
-.time{font-size:12px;color:#aaa;text-align:center}
-
-/* Playlist */
-.playlist{
-margin-top:15px
-}
-.track{
-padding:6px;cursor:pointer
-}
-.track.active{color:#0ff}
-
-/* About */
-.about{
-margin-top:30px;
-background:#060b15cc;
-border-radius:20px;
-padding:20px;
-border:1px solid #0ff3
-}
-.field{
-display:flex;align-items:center;margin:8px 0
-}
-.field i{width:25px;color:#0ff}
 
 /* Steam Button */
-.steam-btn{
-position:fixed;top:20px;right:20px;
-background:linear-gradient(45deg,#0ff,#06f);
-padding:12px 18px;border-radius:40px;
-color:#000;font-weight:bold;text-decoration:none
+.steam{
+position:fixed;
+top:20px;
+right:20px;
+color:#0f0;
+border:1px solid #0f0;
+padding:10px 16px;
+text-decoration:none;
+font-size:13px;
+transition:.3s;
+}
+.steam:hover{
+background:#0f0;
+color:#000;
 }
 </style>
 </head>
 
-<body onclick="unlock()">
+<body>
 
 <div class="bg"></div>
-<div class="side left"></div>
-<div class="side right"></div>
-<canvas id="rain"></canvas>
 
-<a class="steam-btn" target="_blank"
+<a class="steam" target="_blank"
 href="https://steamcommunity.com/id/M_LMC/">
-<i class="fab fa-steam"></i> Add Friend
+<i class="fab fa-steam"></i> STEAM
 </a>
 
-<div class="container" id="scene">
+<div class="hud">
 
-<div class="player" id="player">
-<h1>LMC MUSIC HUD</h1>
+<h1>VOID</h1>
 
-<audio id="audio" autoplay muted></audio>
+<audio id="audio"></audio>
 
-<div class="controls">
-<i class="fa fa-backward" onclick="prev()"></i>
-<i class="fa fa-play" onclick="playMusic()"></i>
-<i class="fa fa-stop" onclick="stopMusic()"></i>
-<i class="fa fa-forward" onclick="next()"></i>
-</div>
-
-<div class="progress" onclick="seek(event)">
+<div class="progress">
 <div class="bar" id="bar"></div>
 </div>
-<div class="time" id="time">0:00 / 0:00</div>
 
-<input type="range" min="0" max="1" step="0.01"
-oninput="audio.volume=this.value">
-
-<div class="playlist">
-<div class="track active" onclick="setTrack(0)">
-Mvshreghi – Vasam Ajib Bood
-</div>
-<div class="track" onclick="setTrack(1)">
-Mvshreghi – Adhd
-</div>
-</div>
+<div class="controls">
+<i class="fa fa-play" onclick="play()"></i>
+<i class="fa fa-pause" onclick="pause()"></i>
+<i class="fa fa-stop" onclick="stop()"></i>
 </div>
 
-<div class="about">
-<div class="field"><i class="fa fa-user"></i>Age: 20</div>
-<div class="field"><i class="fa fa-clock"></i>Timeplay CS: 800h</div>
-<div class="field"><i class="fa fa-ranking-star"></i>Rank: 12000</div>
-<div class="field"><i class="fa fa-layer-group"></i>Steam Level: 22</div>
-<div class="field"><i class="fab fa-discord"></i>@mahdiyar_lmc</div>
-<div class="field"><i class="fa fa-quote-left"></i>داریوشم ولی بی‌اقبال</div>
+<div class="info">
+<div>AGE: 20</div>
+<div>CS TIME: 800h</div>
+<div>RANK: 12000</div>
+<div>LEVEL: 22</div>
 </div>
 
 </div>
 
 <script>
-/* Audio */
-const tracks=[
-'https://dl.godpori.com/04/05/Mvshreghi%20-%20Vasam%20Ajib%20Bood%20[128].mp3',
-'https://dl.bandmusic.ir/files/mp3/s1/01%20Mvshreghi%20-%20Adhd.mp3'
-];
-let i=0;
-const audio=document.getElementById('audio');
-audio.src=tracks[i];
+const audio=document.getElementById("audio");
 
-function unlock(){audio.muted=false;audio.play()}
-function playMusic(){audio.play()}
-function stopMusic(){audio.pause();audio.currentTime=0}
-function next(){i=(i+1)%tracks.length;set()}
-function prev(){i=(i-1+tracks.length)%tracks.length;set()}
-function setTrack(n){i=n;set()}
-function set(){
-audio.src=tracks[i];audio.play();
-document.querySelectorAll('.track').forEach(t=>t.classList.remove('active'));
-document.querySelectorAll('.track')[i].classList.add('active');
-}
+/* ⚠️ اپل موزیک مستقیم پلی نمیشه
+باید لینک mp3 مستقیم بزاری */
+audio.src="PUT_YOUR_DIRECT_MP3_LINK_HERE";
 
-/* Progress */
+function play(){audio.play()}
+function pause(){audio.pause()}
+function stop(){audio.pause();audio.currentTime=0}
+
 audio.ontimeupdate=()=>{
-bar.style.width=(audio.currentTime/audio.duration*100)+'%';
+if(audio.duration){
+bar.style.width=(audio.currentTime/audio.duration*100)+"%";
 }
-
-/* Rain Glass */
-const c=document.getElementById('rain');
-const x=c.getContext('2d');
-c.width=innerWidth;c.height=innerHeight;
-const drops=[];
-for(let i=0;i<120;i++)
-drops.push({x:Math.random()*c.width,y:Math.random()*c.height,s:2+Math.random()*4});
-
-function rain(){
-x.clearRect(0,0,c.width,c.height);
-x.strokeStyle='#0ff';
-drops.forEach(d=>{
-x.beginPath();
-x.moveTo(d.x,d.y);
-x.lineTo(d.x,d.y+14);
-x.stroke();
-d.y+=d.s;
-if(d.y>c.height){
-x.beginPath();
-x.arc(d.x,c.height,8,0,Math.PI*2);
-x.stroke();
-d.y=0;
 }
-});
-requestAnimationFrame(rain);
-}
-rain();
 </script>
 
 </body>
