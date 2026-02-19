@@ -4,6 +4,19 @@
 <meta charset="UTF-8">
 <title>LMC || VOID</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- 🔐 Steam Safe Meta -->
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="robots" content="index, follow">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta http-equiv="Content-Security-Policy"
+content="default-src 'self' https: data:;
+media-src https:;
+style-src 'self' 'unsafe-inline' https:;
+script-src 'self' 'unsafe-inline' https:;
+frame-src https:;
+img-src 'self' https: data:;">
+
 <link rel="stylesheet"
 href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 
@@ -25,42 +38,37 @@ overflow:hidden;
 position:fixed;
 inset:0;
 background:url('https://i.pinimg.com/originals/c8/cc/44/c8cc44d4a558a872b28b82cc738c3d39.gif') center/cover no-repeat;
-filter:brightness(.7) contrast(1.2);
+filter:brightness(.75) contrast(1.2);
 z-index:-3;
 }
 
-/* 🩸 BLOOD DRIPS */
-.blood-container{
+/* 🩸 BLOOD CORNER (جاری) */
+.blood{
 position:fixed;
 top:0;
 left:0;
-width:100%;
-pointer-events:none;
-z-index:2;
+width:300px;
+height:300px;
+background:
+radial-gradient(circle at 40% 20%, #900 0%, transparent 60%),
+radial-gradient(circle at 60% 40%, #600 0%, transparent 70%);
+z-index:-1;
+animation:flow 8s infinite alternate ease-in-out;
 }
-.drop{
-position:absolute;
-top:-20px;
-width:6px;
-height:20px;
-background:linear-gradient(#900,#300);
-border-radius:50%;
-animation:drip 4s linear infinite;
-opacity:.8;
-}
-@keyframes drip{
-0%{transform:translateY(0)}
-100%{transform:translateY(110vh)}
+
+@keyframes flow{
+0%{transform:translateY(0) scale(1)}
+100%{transform:translateY(20px) scale(1.05)}
 }
 
 /* 🎮 GLASS CARD */
 .card{
-width:550px;
+width:560px;
 padding:35px;
 border-radius:18px;
 background:rgba(15,15,20,.35);
 backdrop-filter:blur(18px);
-border:1px solid rgba(255,0,0,.15);
+border:1px solid rgba(255,0,0,.2);
 box-shadow:0 0 80px rgba(0,0,0,.9);
 animation:fadeIn 1s ease forwards;
 }
@@ -71,7 +79,7 @@ text-align:center;
 letter-spacing:6px;
 color:#fff;
 margin-bottom:25px;
-text-shadow:0 0 15px #900;
+text-shadow:0 0 20px #900;
 }
 
 /* INFO GRID */
@@ -89,7 +97,7 @@ font-size:14px;
 transition:.3s;
 }
 .field:hover{
-transform:translateX(5px);
+transform:translateX(6px);
 color:#fff;
 }
 .field i{
@@ -100,7 +108,7 @@ color:#ff0033;
 .player{
 padding:20px;
 border-radius:14px;
-background:rgba(0,0,0,.5);
+background:rgba(0,0,0,.55);
 border:1px solid rgba(255,0,0,.3);
 box-shadow:0 0 30px rgba(255,0,0,.2);
 }
@@ -122,7 +130,6 @@ transform:scale(1.3);
 text-shadow:0 0 10px red;
 }
 
-/* Progress */
 .progress{
 height:8px;
 background:#111;
@@ -137,13 +144,27 @@ width:0%;
 background:linear-gradient(90deg,#600,#ff0033);
 }
 
-/* Visualizer */
 canvas{
 width:100%;
 height:60px;
 }
 
-/* Animations */
+.steam{
+position:fixed;
+top:20px;
+right:20px;
+color:#ff0033;
+border:1px solid #ff0033;
+padding:8px 14px;
+text-decoration:none;
+font-size:13px;
+transition:.3s;
+}
+.steam:hover{
+background:#ff0033;
+color:#000;
+}
+
 @keyframes fadeIn{
 from{opacity:0;transform:scale(.95)}
 to{opacity:1;transform:scale(1)}
@@ -154,9 +175,12 @@ to{opacity:1;transform:scale(1)}
 <body>
 
 <div class="bg"></div>
+<div class="blood"></div>
 
-<!-- Blood Drips -->
-<div class="blood-container" id="blood"></div>
+<a class="steam" target="_blank"
+href="https://steamcommunity.com/id/M_LMC/">
+<i class="fab fa-steam"></i> STEAM PROFILE
+</a>
 
 <div class="card">
 
@@ -185,13 +209,12 @@ to{opacity:1;transform:scale(1)}
 <canvas id="visualizer"></canvas>
 
 <audio id="audio"
-src="https://raw.githubusercontent.com/zinoxplus/me/main/VOID.m4a"></audio>
+src="https://raw.githubusercontent.com/zinoxplus/me/main/void.mp3"></audio>
 
 </div>
 </div>
 
 <script>
-/* 🎧 AUDIO + VISUALIZER */
 const audio=document.getElementById("audio");
 const bar=document.getElementById("bar");
 const canvas=document.getElementById("visualizer");
@@ -205,8 +228,8 @@ const source=audioCtx.createMediaElementSource(audio);
 const analyser=audioCtx.createAnalyser();
 source.connect(analyser);
 analyser.connect(audioCtx.destination);
-
 analyser.fftSize=64;
+
 const bufferLength=analyser.frequencyBinCount;
 const dataArray=new Uint8Array(bufferLength);
 
@@ -223,10 +246,7 @@ ctx.fillRect(i*barWidth,canvas.height-barHeight,barWidth-2,barHeight);
 }
 draw();
 
-function play(){
-audioCtx.resume();
-audio.play();
-}
+function play(){audioCtx.resume();audio.play()}
 function pause(){audio.pause()}
 function stop(){audio.pause();audio.currentTime=0}
 
@@ -238,16 +258,6 @@ bar.style.width=(audio.currentTime/audio.duration*100)+"%";
 function seek(e){
 const percent=e.offsetX/e.target.clientWidth;
 audio.currentTime=percent*audio.duration;
-}
-
-/* 🩸 Generate Blood Drops */
-const blood=document.getElementById("blood");
-for(let i=0;i<25;i++){
-let d=document.createElement("div");
-d.classList.add("drop");
-d.style.left=Math.random()*100+"%";
-d.style.animationDuration=(3+Math.random()*4)+"s";
-blood.appendChild(d);
 }
 </script>
 
