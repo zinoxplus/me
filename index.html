@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <title>LMC || VOID</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <link rel="stylesheet"
 href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 
@@ -21,141 +20,130 @@ color:#ddd;
 overflow:hidden;
 }
 
-/* 🐦 BACKGROUND (واضح‌تر) */
+/* 🐦 BACKGROUND */
 .bg{
 position:fixed;
 inset:0;
 background:url('https://i.pinimg.com/originals/c8/cc/44/c8cc44d4a558a872b28b82cc738c3d39.gif') center/cover no-repeat;
-filter:brightness(.6) contrast(1.3);
+filter:brightness(.7) contrast(1.2);
 z-index:-3;
 }
 
-/* 🔥 Horror Dark Gradient */
-body::before{
-content:"";
+/* 🩸 BLOOD DRIPS */
+.blood-container{
 position:fixed;
-inset:0;
-background:radial-gradient(circle at center,rgba(0,0,0,.4),#000 80%);
-z-index:-2;
+top:0;
+left:0;
+width:100%;
+pointer-events:none;
+z-index:2;
+}
+.drop{
+position:absolute;
+top:-20px;
+width:6px;
+height:20px;
+background:linear-gradient(#900,#300);
+border-radius:50%;
+animation:drip 4s linear infinite;
+opacity:.8;
+}
+@keyframes drip{
+0%{transform:translateY(0)}
+100%{transform:translateY(110vh)}
 }
 
-/* 🩸 subtle moving red shadow */
-body::after{
-content:"";
-position:fixed;
-inset:0;
-background:radial-gradient(circle at 50% 50%, rgba(100,0,0,.15), transparent 70%);
-animation:pulse 6s infinite alternate;
-z-index:-1;
-}
-
-@keyframes pulse{
-from{opacity:.3}
-to{opacity:.7}
-}
-
-/* 🎮 Glass Gamer Card */
+/* 🎮 GLASS CARD */
 .card{
-width:520px;
-padding:30px;
-border-radius:16px;
-background:rgba(10,10,15,.35);
-backdrop-filter:blur(14px);
-border:1px solid rgba(255,255,255,.08);
+width:550px;
+padding:35px;
+border-radius:18px;
+background:rgba(15,15,20,.35);
+backdrop-filter:blur(18px);
+border:1px solid rgba(255,0,0,.15);
 box-shadow:0 0 80px rgba(0,0,0,.9);
-animation:fadeIn 1.2s ease forwards;
+animation:fadeIn 1s ease forwards;
 }
 
-/* Title Glitch */
+/* TITLE */
 .card h1{
 text-align:center;
 letter-spacing:6px;
-font-weight:300;
 color:#fff;
 margin-bottom:25px;
-position:relative;
+text-shadow:0 0 15px #900;
 }
 
-.card h1::after{
-content:"VOID";
-position:absolute;
-left:0;
-right:0;
-color:#f00;
-opacity:.3;
-animation:glitch 2s infinite;
-}
-
-@keyframes glitch{
-0%{transform:translate(0)}
-20%{transform:translate(-2px,1px)}
-40%{transform:translate(2px,-1px)}
-60%{transform:translate(-1px,2px)}
-80%{transform:translate(1px,-2px)}
-100%{transform:translate(0)}
-}
-
-/* Info Grid */
+/* INFO GRID */
 .info{
 display:grid;
 grid-template-columns:1fr 1fr;
-gap:15px;
+gap:18px;
 margin-bottom:30px;
 }
-
 .field{
 display:flex;
 align-items:center;
 gap:10px;
-font-size:13px;
-opacity:0;
-transform:translateY(10px);
-animation:loadUp .6s forwards;
-}
-
-.field i{
-color:#ff0033;
 font-size:14px;
-}
-
-@keyframes loadUp{
-to{opacity:1;transform:translateY(0)}
-}
-
-/* 🎧 Spotify Horror Frame */
-.spotify{
-margin-top:10px;
-padding:15px;
-border-radius:12px;
-background:rgba(0,0,0,.4);
-border:1px solid rgba(255,0,0,.2);
-box-shadow:0 0 25px rgba(255,0,0,.15);
-transition:.4s;
-}
-
-.spotify:hover{
-box-shadow:0 0 40px rgba(255,0,0,.4);
-transform:scale(1.02);
-}
-
-/* Steam Button */
-.steam{
-position:fixed;
-top:20px;
-right:20px;
-color:#ff0033;
-border:1px solid #ff0033;
-padding:8px 14px;
-text-decoration:none;
-font-size:12px;
 transition:.3s;
 }
-.steam:hover{
-background:#ff0033;
-color:#000;
+.field:hover{
+transform:translateX(5px);
+color:#fff;
+}
+.field i{
+color:#ff0033;
 }
 
-/* Fade */
+/* 🎧 PLAYER */
+.player{
+padding:20px;
+border-radius:14px;
+background:rgba(0,0,0,.5);
+border:1px solid rgba(255,0,0,.3);
+box-shadow:0 0 30px rgba(255,0,0,.2);
+}
+
+.controls{
+display:flex;
+justify-content:center;
+gap:30px;
+font-size:22px;
+margin-bottom:15px;
+}
+.controls i{
+cursor:pointer;
+color:#ff0033;
+transition:.3s;
+}
+.controls i:hover{
+transform:scale(1.3);
+text-shadow:0 0 10px red;
+}
+
+/* Progress */
+.progress{
+height:8px;
+background:#111;
+border-radius:6px;
+overflow:hidden;
+cursor:pointer;
+margin-bottom:15px;
+}
+.bar{
+height:100%;
+width:0%;
+background:linear-gradient(90deg,#600,#ff0033);
+}
+
+/* Visualizer */
+canvas{
+width:100%;
+height:60px;
+}
+
+/* Animations */
 @keyframes fadeIn{
 from{opacity:0;transform:scale(.95)}
 to{opacity:1;transform:scale(1)}
@@ -167,57 +155,101 @@ to{opacity:1;transform:scale(1)}
 
 <div class="bg"></div>
 
-<a class="steam" target="_blank"
-href="https://steamcommunity.com/id/M_LMC/">
-<i class="fab fa-steam"></i> STEAM
-</a>
+<!-- Blood Drips -->
+<div class="blood-container" id="blood"></div>
 
 <div class="card">
 
 <h1>VOID</h1>
 
 <div class="info">
-
-<div class="field" style="animation-delay:.1s">
-<i class="fa fa-user"></i> Age: 20
+<div class="field"><i class="fa fa-user"></i> Age: 20</div>
+<div class="field"><i class="fa fa-clock"></i> Timeplay CS: 800h</div>
+<div class="field"><i class="fa fa-ranking-star"></i> Rank: 12000</div>
+<div class="field"><i class="fa fa-layer-group"></i> Steam Level: 22</div>
+<div class="field"><i class="fab fa-discord"></i> @mahdiyar_lmc</div>
+<div class="field"><i class="fa fa-quote-left"></i> داریوشم ولی بی‌اقبال</div>
 </div>
 
-<div class="field" style="animation-delay:.2s">
-<i class="fa fa-clock"></i> Timeplay CS: 800h
+<div class="player">
+<div class="controls">
+<i class="fa fa-play" onclick="play()"></i>
+<i class="fa fa-pause" onclick="pause()"></i>
+<i class="fa fa-stop" onclick="stop()"></i>
 </div>
 
-<div class="field" style="animation-delay:.3s">
-<i class="fa fa-ranking-star"></i> Rank: 12000
+<div class="progress" onclick="seek(event)">
+<div class="bar" id="bar"></div>
 </div>
 
-<div class="field" style="animation-delay:.4s">
-<i class="fa fa-layer-group"></i> Steam Level: 22
-</div>
+<canvas id="visualizer"></canvas>
 
-<div class="field" style="animation-delay:.5s">
-<i class="fab fa-discord"></i> @mahdiyar_lmc
-</div>
-
-<div class="field" style="animation-delay:.6s">
-<i class="fa fa-quote-left"></i> داریوشم ولی بی‌اقبال
-</div>
+<audio id="audio"
+src="https://raw.githubusercontent.com/zinoxplus/me/main/VOID.m4a"></audio>
 
 </div>
-
-<div class="spotify">
-<iframe data-testid="embed-iframe"
-style="border-radius:12px"
-src="https://open.spotify.com/embed/track/3OKpz83Po7JuqGCnhOM7ob?utm_source=generator&theme=0"
-width="100%"
-height="352"
-frameBorder="0"
-allowfullscreen=""
-allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-loading="lazy">
-</iframe>
 </div>
 
-</div>
+<script>
+/* 🎧 AUDIO + VISUALIZER */
+const audio=document.getElementById("audio");
+const bar=document.getElementById("bar");
+const canvas=document.getElementById("visualizer");
+const ctx=canvas.getContext("2d");
+
+canvas.width=600;
+canvas.height=60;
+
+const audioCtx=new (window.AudioContext||window.webkitAudioContext)();
+const source=audioCtx.createMediaElementSource(audio);
+const analyser=audioCtx.createAnalyser();
+source.connect(analyser);
+analyser.connect(audioCtx.destination);
+
+analyser.fftSize=64;
+const bufferLength=analyser.frequencyBinCount;
+const dataArray=new Uint8Array(bufferLength);
+
+function draw(){
+requestAnimationFrame(draw);
+analyser.getByteFrequencyData(dataArray);
+ctx.clearRect(0,0,canvas.width,canvas.height);
+let barWidth=(canvas.width/bufferLength);
+for(let i=0;i<bufferLength;i++){
+let barHeight=dataArray[i]/2;
+ctx.fillStyle="rgb("+(barHeight+100)+",0,0)";
+ctx.fillRect(i*barWidth,canvas.height-barHeight,barWidth-2,barHeight);
+}
+}
+draw();
+
+function play(){
+audioCtx.resume();
+audio.play();
+}
+function pause(){audio.pause()}
+function stop(){audio.pause();audio.currentTime=0}
+
+audio.ontimeupdate=()=>{
+if(audio.duration){
+bar.style.width=(audio.currentTime/audio.duration*100)+"%";
+}
+}
+function seek(e){
+const percent=e.offsetX/e.target.clientWidth;
+audio.currentTime=percent*audio.duration;
+}
+
+/* 🩸 Generate Blood Drops */
+const blood=document.getElementById("blood");
+for(let i=0;i<25;i++){
+let d=document.createElement("div");
+d.classList.add("drop");
+d.style.left=Math.random()*100+"%";
+d.style.animationDuration=(3+Math.random()*4)+"s";
+blood.appendChild(d);
+}
+</script>
 
 </body>
 </html>
