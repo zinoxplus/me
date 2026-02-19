@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fa">
 <head>
+<title> VOID  XLMC  </title>
 <meta charset="UTF-8">
-<title>LMC | VOID</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <link rel="stylesheet"
@@ -17,12 +17,12 @@ color:#eee;
 overflow:hidden;
 }
 
-/* Background */
+/* Background GIF */
 .bg{
 position:fixed;
 inset:0;
 background:url('https://i.pinimg.com/originals/c8/cc/44/c8cc44d4a558a872b28b82cc738c3d39.gif') center/cover no-repeat;
-filter:brightness(.8) contrast(1.2);
+filter:brightness(.75) contrast(1.2);
 z-index:-2;
 }
 
@@ -57,51 +57,79 @@ position:absolute;
 top:50%;
 left:50%;
 transform:translate(-50%,-50%);
-width:600px;
-padding:40px;
-background:rgba(0,0,0,.4);
-backdrop-filter:blur(15px);
-border-radius:20px;
-border:1px solid rgba(255,255,255,.1);
-box-shadow:0 0 40px rgba(0,0,0,.8);
+width:650px;
+padding:45px;
+background:rgba(0,0,0,.45);
+backdrop-filter:blur(18px);
+border-radius:25px;
+border:1px solid rgba(255,255,255,.08);
+box-shadow:0 0 50px rgba(0,0,0,.9);
+animation:fade 1s ease;
+}
+
+@keyframes fade{
+from{opacity:0;transform:translate(-50%,-55%)}
+to{opacity:1;transform:translate(-50%,-50%)}
 }
 
 h1{
 text-align:center;
 letter-spacing:6px;
 margin-bottom:30px;
+text-shadow:0 0 15px #fff;
 }
 
-/* Info */
+/* Info Grid */
 .info{
 display:grid;
 grid-template-columns:1fr 1fr;
-gap:15px;
-margin-bottom:30px;
+gap:18px;
+margin-bottom:35px;
 }
 
-.info div{
+.field{
 background:rgba(255,255,255,.06);
-padding:15px;
-border-radius:12px;
+padding:14px;
+border-radius:14px;
 display:flex;
 align-items:center;
-gap:10px;
-transition:.3s;
+gap:12px;
+position:relative;
+overflow:hidden;
+transition:.4s;
 }
 
-.info div:hover{
-background:rgba(255,255,255,.12);
+.field::before{
+content:"";
+position:absolute;
+inset:0;
+background:linear-gradient(120deg,transparent,rgba(255,255,255,.2),transparent);
+transform:translateX(-100%);
+}
+
+.field:hover::before{
+animation:shine .8s forwards;
+}
+
+@keyframes shine{
+to{transform:translateX(100%)}
+}
+
+.field:hover{
+background:rgba(255,255,255,.15);
 transform:scale(1.05);
 }
 
-.info i{
+.field i{
+font-size:18px;
 color:#fff;
+width:22px;
+text-align:center;
 }
 
 /* Player */
 .player{
-margin-top:10px;
+margin-top:20px;
 }
 
 .progress{
@@ -115,14 +143,15 @@ cursor:pointer;
 .bar{
 height:100%;
 width:0%;
-background:#fff;
+background:linear-gradient(90deg,#fff,#aaa);
+box-shadow:0 0 10px #fff;
 }
 
 .controls{
 margin-top:15px;
 display:flex;
 justify-content:center;
-gap:40px;
+gap:45px;
 font-size:22px;
 }
 
@@ -156,23 +185,25 @@ text-align:center;
 
 <a class="steam" target="_blank"
 href="https://steamcommunity.com/id/M_LMC/">
-<i class="fab fa-steam"></i> STEAM PROFILE
+<i class="fab fa-steam"></i> ♦ Steam Profile ♦
 </a>
 
 <div class="card">
 
-<h1>VOID</h1>
+<h1>X LMC </h1>
 
 <div class="info">
-<div><i class="fa fa-user"></i> AGE: 20</div>
-<div><i class="fa fa-gamepad"></i> CS TIME: 800h</div>
-<div><i class="fa fa-trophy"></i> RANK: 12000</div>
-<div><i class="fa fa-star"></i> LEVEL: 22</div>
+<div class="field"><i class="fa fa-user"></i> Age: 20</div>
+<div class="field"><i class="fa fa-clock"></i> Timeplay CS: 800h</div>
+<div class="field"><i class="fa fa-trophy"></i> Rank: 12000</div>
+<div class="field"><i class="fa fa-layer-group"></i> Steam Level: 22</div>
+<div class="field"><i class="fab fa-discord"></i> @mahdiyar_lmc</div>
+<div class="field"><i class="fa fa-quote-left"></i> I LOST IN THE BACKROOMS</div>
 </div>
 
 <div class="player">
 
-<audio id="audio">
+<audio id="audio" preload="auto">
 <source src="https://zinoxplus.github.io/me/VOID.mp3" type="audio/mpeg">
 Your browser does not support audio.
 </audio>
@@ -202,7 +233,7 @@ const audio=document.getElementById("audio");
 const bar=document.getElementById("bar");
 const time=document.getElementById("time");
 
-function play(){audio.play()}
+function play(){audio.play().catch(e=>alert("Click play again"))}
 function pause(){audio.pause()}
 function restart(){audio.currentTime=0}
 
