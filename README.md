@@ -8,7 +8,7 @@
 
 
   
- <body color="#D62C0F">   #PAIN </body>
+ <body color="D62C0F">   #PAIN </body>
 
 
 
