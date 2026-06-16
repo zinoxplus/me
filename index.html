@@ -19,12 +19,18 @@ image-rendering:pixelated;
 }
 
 /* BACKGROUND */
-.bg{
+..bg{
 position:fixed;
-inset:0;
-background:url('https://raw.githubusercontent.com/zinoxplus/me/main/f5652e1568a4bc34afda29c711b53f71.gif') center/cover no-repeat;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background-image:url('https://raw.githubusercontent.com/zinoxplus/me/main/f5652e1568a4bc34afda29c711b53f71.gif');
+background-position:center;
+background-size:cover;
+background-repeat:no-repeat;
 filter:brightness(.75) contrast(1.2);
-z-index:-2;
+z-index:0;
 animation:bgZoom 20s infinite alternate ease-in-out;
 }
 
@@ -39,6 +45,12 @@ position:fixed;
 inset:0;
 background:rgba(0,0,0,.45);
 z-index:-1;
+}
+.steam,
+.card,
+footer{
+position:relative;
+z-index:2;
 }
 
 /* STEAM BUTTON */
