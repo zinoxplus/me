@@ -3,50 +3,202 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>XLMC - CS2 Edition</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-<link rel="stylesheet" href="css/main.css">
+<title>XLMC</title>
+
+<style>
+:root{
+--accent:#ff9900;
+--panel:rgba(25,25,25,.75);
+}
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Segoe UI,sans-serif;
+}
+
+body{
+background:#111;
+color:#fff;
+overflow:hidden;
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+}
+
+/* Background */
+.bg{
+position:fixed;
+inset:0;
+background:url("https://4kwallpapers.com/images/walls/thumbs_2t/2261.png")
+center/cover;
+filter:brightness(.35);
+z-index:-2;
+}
+
+/* Scanlines */
+.scan{
+position:fixed;
+inset:0;
+background:
+repeating-linear-gradient(
+transparent 0 3px,
+rgba(255,255,255,.03) 4px
+);
+pointer-events:none;
+}
+
+/* Mouse Spotlight */
+.spot{
+position:fixed;
+width:500px;
+height:500px;
+border-radius:50%;
+pointer-events:none;
+background:
+radial-gradient(circle,
+rgba(255,153,0,.18),
+transparent 70%);
+transform:translate(-50%,-50%);
+}
+
+/* Main Panel */
+.panel{
+position:relative;
+width:min(900px,95%);
+padding:35px;
+background:var(--panel);
+backdrop-filter:blur(18px);
+border-radius:18px;
+border:1px solid rgba(255,153,0,.3);
+box-shadow:
+0 0 40px rgba(255,153,0,.15),
+0 0 80px rgba(255,153,0,.05);
+animation:float 5s ease-in-out infinite;
+}
+
+/* CS2 Corners */
+.panel::before,
+.panel::after{
+content:"";
+position:absolute;
+width:60px;
+height:60px;
+border:3px solid var(--accent);
+}
+
+.panel::before{
+left:-1px;
+top:-1px;
+border-right:none;
+border-bottom:none;
+}
+
+.panel::after{
+right:-1px;
+bottom:-1px;
+border-left:none;
+border-top:none;
+}
+
+h1{
+font-size:48px;
+letter-spacing:10px;
+color:var(--accent);
+text-shadow:0 0 15px var(--accent);
+}
+
+.subtitle{
+opacity:.8;
+margin-top:10px;
+}
+
+.grid{
+margin-top:25px;
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:12px;
+}
+
+.card{
+background:#1b1f24;
+padding:14px;
+border-left:4px solid var(--accent);
+transition:.25s;
+}
+
+.card:hover{
+transform:translateY(-5px);
+box-shadow:0 0 15px rgba(255,153,0,.25);
+}
+
+.btn{
+margin-top:20px;
+display:inline-block;
+padding:12px 20px;
+background:var(--accent);
+color:#000;
+font-weight:bold;
+text-decoration:none;
+border-radius:8px;
+transition:.25s;
+}
+
+.btn:hover{
+transform:translateY(-3px);
+box-shadow:0 0 20px rgba(255,153,0,.4);
+}
+
+@keyframes float{
+50%{
+transform:translateY(-8px);
+}
+}
+</style>
 </head>
+
 <body>
+
 <div class="bg"></div>
-<a class="steam" href="https://steamcommunity.com/id/M_LMC/" target="_blank">Steam Profile</a>
+<div class="scan"></div>
+<div class="spot"></div>
 
-<div class="card">
+<div class="panel">
+
 <h1>X LMC</h1>
-
-<div class="info">
-<div class="field">Age:20</div>
-<div class="field">Timeplay CS:800h</div>
-<div class="field">Rank:12000</div>
-<div class="field">Steam Level:22</div>
-<div class="field">@mahdiyar_lmc</div>
-<div class="field">@X_LMC</div>
-<div class="field">My homeland was destroyed</div>
+<div class="subtitle">
+Counter-Strike 2 Player Profile
 </div>
 
-<audio id="audio"></audio>
+<div class="grid">
 
-<div class="progress" id="progress"><div class="bar" id="bar"></div></div>
-<div id="time">00:00 / 00:00</div>
+<div class="card">Age: 20</div>
+<div class="card">CS2 Hours: 800</div>
+<div class="card">Rank: 12000</div>
+<div class="card">Steam Level: 22</div>
+<div class="card">Discord: mahdiyar_lmc</div>
+<div class="card">Telegram: X_LMC</div>
 
-<div class="controls">
-<button id="prev">⏮</button>
-<button id="play">▶</button>
-<button id="next">⏭</button>
-<button id="shuffle">🔀</button>
-<button id="repeat">🔁</button>
 </div>
 
-<input type="range" id="volume" min="0" max="1" step="0.01" value="1">
+<a class="btn"
+href="https://steamcommunity.com/id/M_LMC/"
+target="_blank">
+Steam Profile
+</a>
 
-<canvas id="visualizer"></canvas>
-
-<div class="playlist" id="playlist"></div>
 </div>
 
-<footer>⛓️‍💥 IRAN 💔</footer>
+<script>
+const spot=document.querySelector(".spot");
 
-<script src="js/music-player.js"></script>
-<script src="js/main.js"></script>
+document.addEventListener("mousemove",e=>{
+spot.style.left=e.clientX+"px";
+spot.style.top=e.clientY+"px";
+});
+</script>
+
 </body>
 </html>
