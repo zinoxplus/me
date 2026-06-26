@@ -1,204 +1,39 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>XLMC</title>
-
 <style>
-:root{
---accent:#ff9900;
---panel:rgba(25,25,25,.75);
-}
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Segoe UI,sans-serif;
-}
-
-body{
-background:#111;
-color:#fff;
-overflow:hidden;
-height:100vh;
-display:flex;
-justify-content:center;
-align-items:center;
-}
-
-/* Background */
-.bg{
-position:fixed;
-inset:0;
-background:url("https://4kwallpapers.com/images/walls/thumbs_2t/2261.png")
-center/cover;
-filter:brightness(.35);
-z-index:-2;
-}
-
-/* Scanlines */
-.scan{
-position:fixed;
-inset:0;
-background:
-repeating-linear-gradient(
-transparent 0 3px,
-rgba(255,255,255,.03) 4px
-);
-pointer-events:none;
-}
-
-/* Mouse Spotlight */
-.spot{
-position:fixed;
-width:500px;
-height:500px;
-border-radius:50%;
-pointer-events:none;
-background:
-radial-gradient(circle,
-rgba(255,153,0,.18),
-transparent 70%);
-transform:translate(-50%,-50%);
-}
-
-/* Main Panel */
-.panel{
-position:relative;
-width:min(900px,95%);
-padding:35px;
-background:var(--panel);
-backdrop-filter:blur(18px);
-border-radius:18px;
-border:1px solid rgba(255,153,0,.3);
-box-shadow:
-0 0 40px rgba(255,153,0,.15),
-0 0 80px rgba(255,153,0,.05);
-animation:float 5s ease-in-out infinite;
-}
-
-/* CS2 Corners */
-.panel::before,
-.panel::after{
-content:"";
-position:absolute;
-width:60px;
-height:60px;
-border:3px solid var(--accent);
-}
-
-.panel::before{
-left:-1px;
-top:-1px;
-border-right:none;
-border-bottom:none;
-}
-
-.panel::after{
-right:-1px;
-bottom:-1px;
-border-left:none;
-border-top:none;
-}
-
-h1{
-font-size:48px;
-letter-spacing:10px;
-color:var(--accent);
-text-shadow:0 0 15px var(--accent);
-}
-
-.subtitle{
-opacity:.8;
-margin-top:10px;
-}
-
-.grid{
-margin-top:25px;
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-gap:12px;
-}
-
-.card{
-background:#1b1f24;
-padding:14px;
-border-left:4px solid var(--accent);
-transition:.25s;
-}
-
-.card:hover{
-transform:translateY(-5px);
-box-shadow:0 0 15px rgba(255,153,0,.25);
-}
-
-.btn{
-margin-top:20px;
-display:inline-block;
-padding:12px 20px;
-background:var(--accent);
-color:#000;
-font-weight:bold;
-text-decoration:none;
-border-radius:8px;
-transition:.25s;
-}
-
-.btn:hover{
-transform:translateY(-3px);
-box-shadow:0 0 20px rgba(255,153,0,.4);
-}
-
-@keyframes float{
-50%{
-transform:translateY(-8px);
-}
-}
-</style>
-</head>
-
-<body>
-
-<div class="bg"></div>
-<div class="scan"></div>
-<div class="spot"></div>
-
-<div class="panel">
-
-<h1>X LMC</h1>
-<div class="subtitle">
-Counter-Strike 2 Player Profile
-</div>
-
+:root{--accent:#ff9900;--bg:#0f1115;--panel:rgba(20,20,24,.72)}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Segoe UI,sans-serif}
+body{background:var(--bg);color:#fff;overflow:hidden;height:100vh;display:flex;justify-content:center;align-items:center}
+body:before{content:"";position:fixed;inset:0;background:radial-gradient(circle at 20% 20%,rgba(255,153,0,.08),transparent 40%),radial-gradient(circle at 80% 70%,rgba(255,153,0,.05),transparent 35%),linear-gradient(#111,#0c0c0f);z-index:-3}
+.gridbg{position:fixed;inset:0;background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);background-size:50px 50px;mask-image:linear-gradient(#000,transparent);z-index:-2}
+.scan{position:fixed;inset:0;background:repeating-linear-gradient(transparent 0 3px,rgba(255,255,255,.02) 4px);pointer-events:none}
+.spot{position:fixed;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,rgba(255,153,0,.18),transparent 70%);pointer-events:none;transform:translate(-50%,-50%)}
+.panel{position:relative;width:min(920px,95%);padding:36px;border-radius:22px;background:var(--panel);backdrop-filter:blur(18px);border:1px solid rgba(255,153,0,.25);box-shadow:0 0 30px rgba(255,153,0,.12);overflow:hidden}
+.panel:before{content:"";position:absolute;inset:-2px;border-radius:22px;padding:1px;background:linear-gradient(130deg,rgba(255,153,0,.8),transparent,rgba(255,153,0,.6));-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:glow 5s linear infinite}
+@keyframes glow{to{filter:hue-rotate(20deg)}}
+h1{font-size:54px;letter-spacing:12px;color:var(--accent);text-shadow:0 0 20px #ff9900}
+.subtitle{opacity:.8;margin:10px 0 24px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.card{background:rgba(27,31,36,.85);padding:16px;border:1px solid rgba(255,153,0,.15);border-left:4px solid var(--accent);border-radius:12px;transition:.25s;position:relative;overflow:hidden}
+.card:before{content:"";position:absolute;left:-120%;top:0;width:70%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.12),transparent);transition:.6s}
+.card:hover:before{left:150%}.card:hover{transform:translateY(-5px);box-shadow:0 10px 20px rgba(255,153,0,.18)}
+.btn{display:inline-block;margin-top:24px;padding:14px 22px;background:linear-gradient(135deg,#ff9900,#ffb84d);color:#111;text-decoration:none;font-weight:700;border-radius:12px;transition:.25s}
+.btn:hover{transform:translateY(-3px);box-shadow:0 0 25px rgba(255,153,0,.4)}
+</style></head>
+<body><div class="gridbg"></div><div class="scan"></div><div class="spot"></div>
+<div class="panel"><h1>XLMC</h1><div class="subtitle">PAIN :( </div>
 <div class="grid">
-
-<div class="card">Age: 20</div>
-<div class="card">CS2 Hours: 800</div>
-<div class="card">Rank: 12000</div>
-<div class="card">Steam Level: 22</div>
-<div class="card">Discord: mahdiyar_lmc</div>
-<div class="card">Telegram: X_LMC</div>
-
+<div class="card">🎂 Age: 20</div>
+<div class="card">🎮 CS2 Hours: 800</div>
+<div class="card">🏆 Rank: 12000</div>
+<div class="card">⭐ Steam Level: 22</div>
+<div class="card">💬 Discord: mahdiyar_lmc</div>
+<div class="card">📨 Telegram: X_LMC</div>
 </div>
-
-<a class="btn"
-href="https://steamcommunity.com/id/M_LMC/"
-target="_blank">
-Steam Profile
-</a>
-
+<a class="btn" href="https://steamcommunity.com/id/M_LMC/" target="_blank">Steam Profile</a>
 </div>
-
 <script>
-const spot=document.querySelector(".spot");
-
-document.addEventListener("mousemove",e=>{
-spot.style.left=e.clientX+"px";
-spot.style.top=e.clientY+"px";
-});
-</script>
-
-</body>
-</html>
+const s=document.querySelector('.spot');
+document.addEventListener('mousemove',e=>{s.style.left=e.clientX+'px';s.style.top=e.clientY+'px';});
+</script></body></html>
