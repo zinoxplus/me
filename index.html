@@ -1,207 +1,763 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="fa">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>· XLMC ·</title>
+  <style>
+    /* ----- reset & variables ----- */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    }
+    :root {
+      --accent: #ff9900;
+      --accent-glow: rgba(255, 153, 0, 0.35);
+      --panel-bg: rgba(18, 20, 24, 0.78);
+      --card-bg: #1b1f26;
+      --text: #f0f2f5;
+      --muted: #a0a8b5;
+    }
+    body {
+      background: #0a0c0e;
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      margin: 0;
+      overflow-x: hidden;
+    }
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    /* ----- background + overlay + scanline ----- */
+    .bg-layer {
+      position: fixed;
+      inset: 0;
+      background: url('https://4kwallpapers.com/images/walls/thumbs_2t/2261.png') center/cover no-repeat;
+      filter: brightness(0.28) blur(1.2px);
+      z-index: -2;
+    }
+    .bg-overlay {
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle at 30% 40%, rgba(0,0,0,0.4) 0%, #0a0c0e 90%);
+      z-index: -1;
+    }
+    .scanline {
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(transparent 0px, rgba(255,255,255,0.015) 2px, transparent 4px);
+      pointer-events: none;
+      z-index: 0;
+    }
 
-<title> XLMC </title>
+    /* ----- mouse spotlight ----- */
+    .spotlight {
+      position: fixed;
+      width: 540px;
+      height: 540px;
+      border-radius: 50%;
+      pointer-events: none;
+      background: radial-gradient(circle, rgba(255,153,0,0.16) 0%, transparent 72%);
+      transform: translate(-50%, -50%);
+      z-index: 1;
+      transition: opacity 0.1s;
+    }
 
-<meta name="description" content="XLMC Counter Strike 2 Player Profile">
+    /* ----- main panel (glass) ----- */
+    .panel {
+      position: relative;
+      z-index: 5;
+      width: min(1200px, 98%);
+      padding: 2rem 2rem 2rem 2.5rem;
+      background: var(--panel-bg);
+      backdrop-filter: blur(16px) saturate(1.1);
+      border-radius: 28px;
+      border: 1px solid rgba(255, 153, 0, 0.25);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.7), 0 0 30px var(--accent-glow);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      animation: floatGlow 6s ease-in-out infinite;
+    }
+    @keyframes floatGlow {
+      0% { transform: translateY(0); box-shadow: 0 20px 50px rgba(0,0,0,0.7), 0 0 30px var(--accent-glow); }
+      50% { transform: translateY(-6px); box-shadow: 0 30px 60px rgba(0,0,0,0.8), 0 0 50px var(--accent-glow); }
+      100% { transform: translateY(0); box-shadow: 0 20px 50px rgba(0,0,0,0.7), 0 0 30px var(--accent-glow); }
+    }
 
-<link rel="stylesheet" href="style.css">
+    /* cs2 corners */
+    .panel::before,
+    .panel::after {
+      content: '';
+      position: absolute;
+      width: 50px;
+      height: 50px;
+      border: 2.5px solid var(--accent);
+      opacity: 0.7;
+    }
+    .panel::before {
+      left: 12px; top: 12px;
+      border-right: none;
+      border-bottom: none;
+    }
+    .panel::after {
+      right: 12px; bottom: 12px;
+      border-left: none;
+      border-top: none;
+    }
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    /* ----- left profile section ----- */
+    .profile-section {
+      flex: 1.1;
+      min-width: 260px;
+    }
+    .profile-section h1 {
+      font-size: 3.4rem;
+      font-weight: 700;
+      letter-spacing: 8px;
+      color: var(--accent);
+      text-shadow: 0 0 20px var(--accent), 0 0 40px rgba(255,153,0,0.3);
+    }
+    .subtitle {
+      font-size: 1.1rem;
+      color: var(--muted);
+      margin-top: 0.2rem;
+      letter-spacing: 1px;
+      border-left: 3px solid var(--accent);
+      padding-left: 14px;
+    }
 
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    .grid-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 12px;
+      margin: 1.8rem 0 1.5rem;
+    }
+    .card {
+      background: var(--card-bg);
+      padding: 12px 14px;
+      border-left: 4px solid var(--accent);
+      border-radius: 10px;
+      transition: 0.2s ease;
+      font-weight: 500;
+      backdrop-filter: blur(4px);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+    .card:hover {
+      transform: translateY(-4px) scale(1.02);
+      box-shadow: 0 0 20px var(--accent-glow);
+      background: #222831;
+    }
 
+    .btn-steam {
+      display: inline-block;
+      padding: 12px 32px;
+      background: var(--accent);
+      color: #0b0d0f;
+      font-weight: 700;
+      font-size: 1.05rem;
+      border-radius: 40px;
+      text-decoration: none;
+      letter-spacing: 0.5px;
+      transition: 0.2s;
+      box-shadow: 0 4px 12px rgba(255,153,0,0.3);
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    .btn-steam:hover {
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 0 30px var(--accent-glow);
+      background: #ffaa1a;
+    }
+
+    /* ----- music player (right) ----- */
+    .player-wrapper {
+      flex: 1;
+      min-width: 280px;
+      max-width: 460px;
+      background: rgba(10, 12, 14, 0.65);
+      backdrop-filter: blur(12px);
+      border-radius: 24px;
+      padding: 1.4rem 1.4rem 1.2rem;
+      border: 1px solid rgba(255,153,0,0.15);
+      box-shadow: inset 0 0 30px rgba(0,0,0,0.5);
+      transition: 0.2s;
+      display: flex;
+      flex-direction: column;
+    }
+    .player-wrapper .track-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #fff;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-bottom: 6px;
+    }
+    .player-wrapper .track-artist {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+    .progress-area {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .progress-area span {
+      font-size: 0.75rem;
+      color: var(--muted);
+      min-width: 34px;
+    }
+    .seek-bar {
+      flex: 1;
+      height: 4px;
+      -webkit-appearance: none;
+      background: #3a3f4a;
+      border-radius: 6px;
+      outline: none;
+      transition: 0.1s;
+      cursor: pointer;
+    }
+    .seek-bar::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 12px;
+      height: 12px;
+      background: var(--accent);
+      border-radius: 50%;
+      box-shadow: 0 0 12px var(--accent-glow);
+      transition: 0.1s;
+    }
+    .seek-bar::-webkit-slider-thumb:hover { transform: scale(1.15); }
+    .controls-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 4px;
+      flex-wrap: wrap;
+      margin-top: 6px;
+    }
+    .controls-row .btn-group {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+    .ctrl-btn {
+      background: transparent;
+      border: none;
+      color: #d0d8e0;
+      font-size: 1.3rem;
+      width: 36px;
+      height: 36px;
+      border-radius: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: 0.15s;
+      background: rgba(255,255,255,0.03);
+      backdrop-filter: blur(2px);
+    }
+    .ctrl-btn:hover {
+      background: rgba(255,153,0,0.2);
+      color: var(--accent);
+      transform: scale(1.05);
+    }
+    .ctrl-btn.active {
+      color: var(--accent);
+      text-shadow: 0 0 12px var(--accent);
+    }
+    .ctrl-btn.big {
+      font-size: 1.9rem;
+      width: 44px;
+      height: 44px;
+    }
+    .volume-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 100px;
+    }
+    .volume-wrap input[type="range"] {
+      width: 70px;
+      height: 3px;
+      -webkit-appearance: none;
+      background: #3a3f4a;
+      border-radius: 6px;
+      outline: none;
+    }
+    .volume-wrap input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 10px;
+      height: 10px;
+      background: var(--accent);
+      border-radius: 50%;
+    }
+
+    /* playlist */
+    .playlist {
+      margin-top: 14px;
+      max-height: 120px;
+      overflow-y: auto;
+      padding-right: 4px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .playlist::-webkit-scrollbar { width: 4px; }
+    .playlist::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 10px; }
+    .playlist-item {
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      background: rgba(255,255,255,0.02);
+      transition: 0.1s;
+      cursor: pointer;
+      color: #c8d0d8;
+      display: flex;
+      justify-content: space-between;
+      border-left: 2px solid transparent;
+    }
+    .playlist-item:hover { background: rgba(255,153,0,0.08); color: #fff; }
+    .playlist-item.active {
+      background: rgba(255,153,0,0.15);
+      border-left: 3px solid var(--accent);
+      color: #fff;
+      font-weight: 500;
+    }
+
+    /* responsive */
+    @media (max-width: 780px) {
+      .panel { flex-direction: column; padding: 1.8rem; }
+      .player-wrapper { max-width: 100%; }
+      .profile-section h1 { font-size: 2.8rem; }
+      .grid-cards { grid-template-columns: repeat(2,1fr); }
+    }
+    @media (max-width: 480px) {
+      .panel { padding: 1.2rem; }
+      .profile-section h1 { font-size: 2.2rem; letter-spacing: 4px; }
+      .grid-cards { grid-template-columns: 1fr; }
+      .controls-row { flex-direction: column; align-items: stretch; }
+      .volume-wrap { justify-content: center; }
+    }
+  </style>
 </head>
-
 <body>
-
-<!-- Background -->
-
-<div class="bg-layer"></div>
-<div class="overlay"></div>
-<div class="noise"></div>
-<div class="grid-bg"></div>
-
-<!-- Effects -->
-
-<div class="mouse-light"></div>
-
-<div id="particles"></div>
-
-<!-- Main Container -->
-
-<div class="container">
-
-    <!-- HUD Decoration -->
-
-    <div class="hud-top"></div>
-    <div class="hud-bottom"></div>
-
-    <!-- Profile Panel -->
-
-    <section class="profile-panel">
-        
-        <span class="corner corner-tl"></span>
-<span class="corner corner-tr"></span>
-<span class="corner corner-bl"></span>
-<span class="corner corner-br"></span>
-
-        <div class="panel-glow"></div>
-
-        <!-- Header -->
-
-        <header class="profile-header">
-
-            <div class="logo-area">
-
-                <h1 class="logo">
-
-                    XLMC
-
-                </h1>
-
-                <div class="logo-line"></div>
-
-                <p class="subtitle">
-
-                    pain :(
-
-                </p>
-
-            </div>
-
-        </header>
-
-        <!-- Stats -->
-
-        <section class="stats-grid">
-
-            <div class="stat-card">
-
-                <div class="card-icon">
-                    🎂
-                </div>
-
-                <div class="card-label">
-                    AGE
-                </div>
-
-                <div class="card-value">
-                    20
-                </div>
-
-            </div>
-
-            <div class="stat-card">
-
-                <div class="card-icon">
-                    🎮
-                </div>
-
-                <div class="card-label">
-                    CS2 HOURS
-                </div>
-
-                <div class="card-value">
-                    800
-                </div>
-
-            </div>
-
-            <div class="stat-card">
-
-                <div class="card-icon">
-                    🏆
-                </div>
-
-                <div class="card-label">
-                    PREMIER RANK
-                </div>
-
-                <div class="card-value">
-                    12000
-                </div>
-
-            </div>
-
-            <div class="stat-card">
-
-                <div class="card-icon">
-                    ⭐
-                </div>
-
-                <div class="card-label">
-                    STEAM LEVEL
-                </div>
-
-                <div class="card-value">
-                    22
-                </div>
-
-            </div>
-
-            <div class="stat-card">
-
-                <div class="card-icon">
-                    💬
-                </div>
-
-                <div class="card-label">
-                    DISCORD
-                </div>
-
-                <div class="card-value">
-                    mahdiyar_lmc
-                </div>
-
-            </div>
-
-            <div class="stat-card">
-
-                <div class="card-icon">
-                    📨
-                </div>
-
-                <div class="card-label">
-                    TELEGRAM
-                </div>
-
-                <div class="card-value">
-                    X_LMC
-                </div>
-
-            </div>
-
-        </section>
-
-        <!-- Buttons -->
-
-        <section class="action-area">
-
-            <a
-            href="https://steamcommunity.com/id/M_LMC/"
-            target="_blank"
-            class="steam-btn">
-
-                <span>
-                    Steam Profile
-                </span>
-
-            </a>
-
-        </section>
-
-    </section>
-
-</div>
-
-<script src="script.js"></script>
-
+  <div class="bg-layer"></div>
+  <div class="bg-overlay"></div>
+  <div class="scanline"></div>
+  <div class="spotlight" id="spotlight"></div>
+
+  <div class="panel">
+    <!-- left: profile -->
+    <div class="profile-section">
+      <h1>L·M·C</h1>
+      <div class="subtitle">حشهد :( </div>
+      <div class="grid-cards">
+        <div class="card">🧑 Age: 20</div>
+        <div class="card">⏱ CS2 Hours: 800</div>
+        <div class="card">🏅 Premier: 12000</div>
+        <div class="card">⭐ Steam Lv. 22</div>
+        <div class="card">💬 Discord: mahdiyar_lmc</div>
+        <div class="card">📱 Telegram: X_LMC</div>
+      </div>
+      <a class="btn-steam" href="https://steamcommunity.com/id/M_LMC/" target="_blank">🎮 Steam Profile</a>
+    </div>
+
+    <!-- right: music player -->
+    <div class="player-wrapper" id="playerWrapper">
+      <div class="track-title" id="trackTitle">BLOK3 - Napiyosun</div>
+      <div class="track-artist" id="trackArtist">🎧 XLMC · MUSIC </div>
+
+      <div class="progress-area">
+        <span id="currentTime">0:00</span>
+        <input type="range" class="seek-bar" id="seekBar" value="0" step="0.1">
+        <span id="duration">0:00</span>
+      </div>
+
+      <div class="controls-row">
+        <div class="btn-group">
+          <button class="ctrl-btn" id="shuffleBtn" title="Shuffle (S)">🔀</button>
+          <button class="ctrl-btn" id="prevBtn" title="Previous">⏮</button>
+          <button class="ctrl-btn big" id="playBtn" title="Play/Pause (Space)">▶</button>
+          <button class="ctrl-btn" id="nextBtn" title="Next">⏭</button>
+          <button class="ctrl-btn" id="repeatBtn" title="Repeat (R)">🔁</button>
+        </div>
+        <div class="volume-wrap">
+          <button class="ctrl-btn" id="muteBtn" title="Mute (M)">🔊</button>
+          <input type="range" id="volumeBar" min="0" max="1" step="0.05" value="0.7">
+        </div>
+      </div>
+
+      <!-- playlist -->
+      <div class="playlist" id="playlistContainer"></div>
+    </div>
+  </div>
+
+  <script>
+    (function(){
+      "use strict";
+
+      // ----- SPOTLIGHT -----
+      const spot = document.getElementById('spotlight');
+      document.addEventListener('mousemove', (e) => {
+        spot.style.left = e.clientX + 'px';
+        spot.style.top = e.clientY + 'px';
+      });
+
+      // ----- PLAYLIST (raw mp3) -----
+      const tracks = [
+        { name: 'BLOK3 - Napiyosun', url: 'https://raw.githubusercontent.com/zinoxplus/me/main/BLOK3%20-%20Napiyosun%20Mesela%20Musics-Fa.mp3' },
+        { name: 'Track 2', url: 'https://raw.githubusercontent.com/zinoxplus/me/main/2200946991.mp3' },
+        { name: 'Track 3', url: 'https://raw.githubusercontent.com/zinoxplus/me/main/lhzzz.mp3' },
+        { name: 'Track 4', url: 'https://raw.githubusercontent.com/zinoxplus/me/main/nothing_after.mp3' },
+        { name: 'Track 5', url: 'https://raw.githubusercontent.com/zinoxplus/me/main/LLLH.mp3' }
+      ];
+
+      // DOM refs
+      const audio = new Audio();
+      const playBtn = document.getElementById('playBtn');
+      const prevBtn = document.getElementById('prevBtn');
+      const nextBtn = document.getElementById('nextBtn');
+      const shuffleBtn = document.getElementById('shuffleBtn');
+      const repeatBtn = document.getElementById('repeatBtn');
+      const muteBtn = document.getElementById('muteBtn');
+      const seekBar = document.getElementById('seekBar');
+      const volumeBar = document.getElementById('volumeBar');
+      const currentTimeSpan = document.getElementById('currentTime');
+      const durationSpan = document.getElementById('duration');
+      const trackTitle = document.getElementById('trackTitle');
+      const trackArtist = document.getElementById('trackArtist');
+      const playlistContainer = document.getElementById('playlistContainer');
+
+      // state
+      let currentTrackIndex = 0;
+      let isPlaying = false;
+      let isShuffle = false;
+      let repeatMode = 0; // 0: none, 1: all, 2: one
+      let isMuted = false;
+      let previousVolume = 0.7;
+
+      // ----- load from localStorage -----
+      function loadState() {
+        try {
+          const idx = parseInt(localStorage.getItem('xlmc_trackIdx'));
+          if (!isNaN(idx) && idx >= 0 && idx < tracks.length) currentTrackIndex = idx;
+          const vol = parseFloat(localStorage.getItem('xlmc_volume'));
+          if (!isNaN(vol) && vol >= 0 && vol <= 1) {
+            audio.volume = vol;
+            volumeBar.value = vol;
+            previousVolume = vol;
+          }
+          const rep = parseInt(localStorage.getItem('xlmc_repeat'));
+          if (!isNaN(rep) && rep >= 0 && rep <= 2) repeatMode = rep;
+          const shuf = localStorage.getItem('xlmc_shuffle');
+          if (shuf === 'true') isShuffle = true;
+        } catch (_) {}
+      }
+      function saveState() {
+        try {
+          localStorage.setItem('xlmc_trackIdx', String(currentTrackIndex));
+          localStorage.setItem('xlmc_volume', String(audio.volume));
+          localStorage.setItem('xlmc_repeat', String(repeatMode));
+          localStorage.setItem('xlmc_shuffle', String(isShuffle));
+        } catch (_) {}
+      }
+
+      // ----- load track -----
+      function loadTrack(index) {
+        if (index < 0) index = tracks.length - 1;
+        if (index >= tracks.length) index = 0;
+        currentTrackIndex = index;
+        const track = tracks[currentTrackIndex];
+        audio.src = track.url;
+        trackTitle.textContent = track.name;
+        trackArtist.textContent = '🎧 CS2 · XLMC';
+        updatePlaylistHighlight();
+        saveState();
+        // if playing, auto play
+        if (isPlaying) {
+          audio.play().catch(() => { isPlaying = false; updatePlayButton(); });
+        }
+        // reset seek
+        seekBar.value = 0;
+        currentTimeSpan.textContent = '0:00';
+        durationSpan.textContent = '0:00';
+      }
+
+      // ----- update playlist UI -----
+      function updatePlaylistHighlight() {
+        const items = playlistContainer.querySelectorAll('.playlist-item');
+        items.forEach((el, i) => {
+          el.classList.toggle('active', i === currentTrackIndex);
+        });
+      }
+
+      function renderPlaylist() {
+        playlistContainer.innerHTML = '';
+        tracks.forEach((track, idx) => {
+          const div = document.createElement('div');
+          div.className = 'playlist-item' + (idx === currentTrackIndex ? ' active' : '');
+          div.innerHTML = `<span>${track.name}</span><span style="opacity:0.4;font-size:0.75rem;">🎵</span>`;
+          div.addEventListener('click', () => {
+            if (currentTrackIndex === idx && isPlaying) return;
+            currentTrackIndex = idx;
+            loadTrack(idx);
+            if (!isPlaying) {
+              isPlaying = true;
+              audio.play().catch(()=>{});
+              updatePlayButton();
+            }
+          });
+          playlistContainer.appendChild(div);
+        });
+      }
+
+      // ----- play/pause -----
+      function togglePlay() {
+        if (audio.src === '') {
+          loadTrack(currentTrackIndex);
+        }
+        if (isPlaying) {
+          audio.pause();
+          isPlaying = false;
+        } else {
+          audio.play().catch(() => {});
+          isPlaying = true;
+        }
+        updatePlayButton();
+        saveState();
+      }
+
+      function updatePlayButton() {
+        playBtn.textContent = isPlaying ? '⏸' : '▶';
+      }
+
+      // ----- next/prev -----
+      function nextTrack() {
+        if (isShuffle) {
+          let newIdx = Math.floor(Math.random() * tracks.length);
+          while (tracks.length > 1 && newIdx === currentTrackIndex) {
+            newIdx = Math.floor(Math.random() * tracks.length);
+          }
+          currentTrackIndex = newIdx;
+        } else {
+          currentTrackIndex = (currentTrackIndex + 1) % tracks.length;
+        }
+        loadTrack(currentTrackIndex);
+        if (isPlaying) {
+          audio.play().catch(()=>{});
+        }
+        saveState();
+      }
+
+      function prevTrack() {
+        if (audio.currentTime > 3) {
+          audio.currentTime = 0;
+          return;
+        }
+        if (isShuffle) {
+          let newIdx = Math.floor(Math.random() * tracks.length);
+          while (tracks.length > 1 && newIdx === currentTrackIndex) {
+            newIdx = Math.floor(Math.random() * tracks.length);
+          }
+          currentTrackIndex = newIdx;
+        } else {
+          currentTrackIndex = (currentTrackIndex - 1 + tracks.length) % tracks.length;
+        }
+        loadTrack(currentTrackIndex);
+        if (isPlaying) {
+          audio.play().catch(()=>{});
+        }
+        saveState();
+      }
+
+      // ----- repeat toggle -----
+      function toggleRepeat() {
+        repeatMode = (repeatMode + 1) % 3;
+        repeatBtn.textContent = repeatMode === 0 ? '🔁' : (repeatMode === 1 ? '🔁' : '🔂');
+        repeatBtn.style.opacity = repeatMode === 0 ? '0.6' : '1';
+        saveState();
+      }
+
+      // ----- shuffle toggle -----
+      function toggleShuffle() {
+        isShuffle = !isShuffle;
+        shuffleBtn.style.opacity = isShuffle ? '1' : '0.5';
+        shuffleBtn.style.color = isShuffle ? 'var(--accent)' : '#d0d8e0';
+        saveState();
+      }
+
+      // ----- mute -----
+      function toggleMute() {
+        if (isMuted) {
+          audio.volume = previousVolume;
+          volumeBar.value = previousVolume;
+          muteBtn.textContent = '🔊';
+          isMuted = false;
+        } else {
+          previousVolume = audio.volume;
+          audio.volume = 0;
+          volumeBar.value = 0;
+          muteBtn.textContent = '🔇';
+          isMuted = true;
+        }
+        saveState();
+      }
+
+      // ----- volume change -----
+      function setVolume(val) {
+        const v = parseFloat(val);
+        if (isNaN(v)) return;
+        audio.volume = v;
+        volumeBar.value = v;
+        if (v === 0) {
+          muteBtn.textContent = '🔇';
+          isMuted = true;
+        } else {
+          muteBtn.textContent = '🔊';
+          isMuted = false;
+          previousVolume = v;
+        }
+        saveState();
+      }
+
+      // ----- time update -----
+      function formatTime(sec) {
+        if (isNaN(sec) || !isFinite(sec)) return '0:00';
+        const m = Math.floor(sec / 60);
+        const s = Math.floor(sec % 60);
+        return m + ':' + (s < 10 ? '0' : '') + s;
+      }
+
+      function updateProgress() {
+        if (audio.duration && !isNaN(audio.duration)) {
+          const pct = (audio.currentTime / audio.duration) * 100;
+          seekBar.value = pct;
+          currentTimeSpan.textContent = formatTime(audio.currentTime);
+          durationSpan.textContent = formatTime(audio.duration);
+        }
+      }
+
+      // ----- seek -----
+      function setSeek(val) {
+        if (audio.duration && !isNaN(audio.duration)) {
+          audio.currentTime = (val / 100) * audio.duration;
+        }
+      }
+
+      // ----- auto next / repeat -----
+      function handleTrackEnd() {
+        if (repeatMode === 2) { // repeat one
+          audio.currentTime = 0;
+          audio.play().catch(()=>{});
+          return;
+        }
+        if (repeatMode === 1) { // repeat all
+          nextTrack();
+          return;
+        }
+        // none: go next but pause
+        if (currentTrackIndex < tracks.length - 1) {
+          currentTrackIndex++;
+          loadTrack(currentTrackIndex);
+          if (isPlaying) audio.play().catch(()=>{});
+        } else {
+          // last track, stop
+          isPlaying = false;
+          updatePlayButton();
+          audio.currentTime = 0;
+          seekBar.value = 0;
+          currentTimeSpan.textContent = '0:00';
+        }
+        saveState();
+      }
+
+      // ----- keyboard shortcuts -----
+      function handleKey(e) {
+        const tag = document.activeElement?.tagName;
+        if (tag === 'INPUT') return; // ignore input fields
+        const key = e.key;
+        if (key === ' ') {
+          e.preventDefault();
+          togglePlay();
+        } else if (key === 'ArrowLeft') {
+          e.preventDefault();
+          audio.currentTime = Math.max(0, audio.currentTime - 5);
+        } else if (key === 'ArrowRight') {
+          e.preventDefault();
+          audio.currentTime = Math.min(audio.duration || 0, audio.currentTime + 5);
+        } else if (key === 'ArrowUp') {
+          e.preventDefault();
+          let vol = Math.min(1, audio.volume + 0.1);
+          setVolume(vol);
+        } else if (key === 'ArrowDown') {
+          e.preventDefault();
+          let vol = Math.max(0, audio.volume - 0.1);
+          setVolume(vol);
+        } else if (key === 'm' || key === 'M') {
+          e.preventDefault();
+          toggleMute();
+        } else if (key === 'r' || key === 'R') {
+          e.preventDefault();
+          toggleRepeat();
+        } else if (key === 's' || key === 'S') {
+          e.preventDefault();
+          toggleShuffle();
+        }
+      }
+
+      // ----- init -----
+      function init() {
+        loadState();
+        renderPlaylist();
+        loadTrack(currentTrackIndex);
+        audio.volume = parseFloat(volumeBar.value);
+        // set ui
+        repeatBtn.textContent = repeatMode === 0 ? '🔁' : (repeatMode === 1 ? '🔁' : '🔂');
+        repeatBtn.style.opacity = repeatMode === 0 ? '0.6' : '1';
+        shuffleBtn.style.opacity = isShuffle ? '1' : '0.5';
+        shuffleBtn.style.color = isShuffle ? 'var(--accent)' : '#d0d8e0';
+        updatePlayButton();
+
+        // events
+        playBtn.addEventListener('click', togglePlay);
+        prevBtn.addEventListener('click', prevTrack);
+        nextBtn.addEventListener('click', nextTrack);
+        shuffleBtn.addEventListener('click', toggleShuffle);
+        repeatBtn.addEventListener('click', toggleRepeat);
+        muteBtn.addEventListener('click', toggleMute);
+        volumeBar.addEventListener('input', (e) => setVolume(e.target.value));
+        seekBar.addEventListener('input', (e) => setSeek(parseFloat(e.target.value)));
+
+        audio.addEventListener('timeupdate', updateProgress);
+        audio.addEventListener('ended', handleTrackEnd);
+        audio.addEventListener('loadedmetadata', () => {
+          durationSpan.textContent = formatTime(audio.duration);
+          seekBar.value = 0;
+        });
+        audio.addEventListener('play', () => { isPlaying = true; updatePlayButton(); });
+        audio.addEventListener('pause', () => { isPlaying = false; updatePlayButton(); });
+
+        document.addEventListener('keydown', handleKey);
+
+        // auto-play after user interaction (click anywhere)
+        document.addEventListener('click', function autoPlay() {
+          if (audio.src && !isPlaying) {
+            audio.play().catch(()=>{});
+            isPlaying = true;
+            updatePlayButton();
+          }
+          document.removeEventListener('click', autoPlay);
+        }, { once: true });
+      }
+
+      init();
+    })();
+  </script>
 </body>
 </html>
