@@ -1,39 +1,202 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>XLMC</title>
-<style>
-:root{--accent:#ff9900;--bg:#0f1115;--panel:rgba(20,20,24,.72)}
-*{margin:0;padding:0;box-sizing:border-box;font-family:Segoe UI,sans-serif}
-body{background:var(--bg);color:#fff;overflow:hidden;height:100vh;display:flex;justify-content:center;align-items:center}
-body:before{content:"";position:fixed;inset:0;background:radial-gradient(circle at 20% 20%,rgba(255,153,0,.08),transparent 40%),radial-gradient(circle at 80% 70%,rgba(255,153,0,.05),transparent 35%),linear-gradient(#111,#0c0c0f);z-index:-3}
-.gridbg{position:fixed;inset:0;background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);background-size:50px 50px;mask-image:linear-gradient(#000,transparent);z-index:-2}
-.scan{position:fixed;inset:0;background:repeating-linear-gradient(transparent 0 3px,rgba(255,255,255,.02) 4px);pointer-events:none}
-.spot{position:fixed;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,rgba(255,153,0,.18),transparent 70%);pointer-events:none;transform:translate(-50%,-50%)}
-.panel{position:relative;width:min(920px,95%);padding:36px;border-radius:22px;background:var(--panel);backdrop-filter:blur(18px);border:1px solid rgba(255,153,0,.25);box-shadow:0 0 30px rgba(255,153,0,.12);overflow:hidden}
-.panel:before{content:"";position:absolute;inset:-2px;border-radius:22px;padding:1px;background:linear-gradient(130deg,rgba(255,153,0,.8),transparent,rgba(255,153,0,.6));-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:glow 5s linear infinite}
-@keyframes glow{to{filter:hue-rotate(20deg)}}
-h1{font-size:54px;letter-spacing:12px;color:var(--accent);text-shadow:0 0 20px #ff9900}
-.subtitle{opacity:.8;margin:10px 0 24px}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
-.card{background:rgba(27,31,36,.85);padding:16px;border:1px solid rgba(255,153,0,.15);border-left:4px solid var(--accent);border-radius:12px;transition:.25s;position:relative;overflow:hidden}
-.card:before{content:"";position:absolute;left:-120%;top:0;width:70%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.12),transparent);transition:.6s}
-.card:hover:before{left:150%}.card:hover{transform:translateY(-5px);box-shadow:0 10px 20px rgba(255,153,0,.18)}
-.btn{display:inline-block;margin-top:24px;padding:14px 22px;background:linear-gradient(135deg,#ff9900,#ffb84d);color:#111;text-decoration:none;font-weight:700;border-radius:12px;transition:.25s}
-.btn:hover{transform:translateY(-3px);box-shadow:0 0 25px rgba(255,153,0,.4)}
-</style></head>
-<body><div class="gridbg"></div><div class="scan"></div><div class="spot"></div>
-<div class="panel"><h1>XLMC</h1><div class="subtitle">PAIN :( </div>
-<div class="grid">
-<div class="card">🎂 Age: 20</div>
-<div class="card">🎮 CS2 Hours: 800</div>
-<div class="card">🏆 Rank: 12000</div>
-<div class="card">⭐ Steam Level: 22</div>
-<div class="card">💬 Discord: mahdiyar_lmc</div>
-<div class="card">📨 Telegram: X_LMC</div>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title> XLMC </title>
+
+<meta name="description" content="XLMC Counter Strike 2 Player Profile">
+
+<link rel="stylesheet" href="style.css">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+</head>
+
+<body>
+
+<!-- Background -->
+
+<div class="bg-layer"></div>
+<div class="overlay"></div>
+<div class="noise"></div>
+<div class="grid-bg"></div>
+
+<!-- Effects -->
+
+<div class="mouse-light"></div>
+
+<div id="particles"></div>
+
+<!-- Main Container -->
+
+<div class="container">
+
+    <!-- HUD Decoration -->
+
+    <div class="hud-top"></div>
+    <div class="hud-bottom"></div>
+
+    <!-- Profile Panel -->
+
+    <section class="profile-panel">
+
+        <div class="panel-glow"></div>
+
+        <!-- Header -->
+
+        <header class="profile-header">
+
+            <div class="logo-area">
+
+                <h1 class="logo">
+
+                    XLMC
+
+                </h1>
+
+                <div class="logo-line"></div>
+
+                <p class="subtitle">
+
+                    pain :(
+
+                </p>
+
+            </div>
+
+        </header>
+
+        <!-- Stats -->
+
+        <section class="stats-grid">
+
+            <div class="stat-card">
+
+                <div class="card-icon">
+                    🎂
+                </div>
+
+                <div class="card-label">
+                    AGE
+                </div>
+
+                <div class="card-value">
+                    20
+                </div>
+
+            </div>
+
+            <div class="stat-card">
+
+                <div class="card-icon">
+                    🎮
+                </div>
+
+                <div class="card-label">
+                    CS2 HOURS
+                </div>
+
+                <div class="card-value">
+                    800
+                </div>
+
+            </div>
+
+            <div class="stat-card">
+
+                <div class="card-icon">
+                    🏆
+                </div>
+
+                <div class="card-label">
+                    PREMIER RANK
+                </div>
+
+                <div class="card-value">
+                    12000
+                </div>
+
+            </div>
+
+            <div class="stat-card">
+
+                <div class="card-icon">
+                    ⭐
+                </div>
+
+                <div class="card-label">
+                    STEAM LEVEL
+                </div>
+
+                <div class="card-value">
+                    22
+                </div>
+
+            </div>
+
+            <div class="stat-card">
+
+                <div class="card-icon">
+                    💬
+                </div>
+
+                <div class="card-label">
+                    DISCORD
+                </div>
+
+                <div class="card-value">
+                    mahdiyar_lmc
+                </div>
+
+            </div>
+
+            <div class="stat-card">
+
+                <div class="card-icon">
+                    📨
+                </div>
+
+                <div class="card-label">
+                    TELEGRAM
+                </div>
+
+                <div class="card-value">
+                    X_LMC
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- Buttons -->
+
+        <section class="action-area">
+
+            <a
+            href="https://steamcommunity.com/id/M_LMC/"
+            target="_blank"
+            class="steam-btn">
+
+                <span>
+                    Steam Profile
+                </span>
+
+            </a>
+
+        </section>
+
+    </section>
+
 </div>
-<a class="btn" href="https://steamcommunity.com/id/M_LMC/" target="_blank">Steam Profile</a>
-</div>
-<script>
-const s=document.querySelector('.spot');
-document.addEventListener('mousemove',e=>{s.style.left=e.clientX+'px';s.style.top=e.clientY+'px';});
-</script></body></html>
+
+<script src="script.js"></script>
+
+</body>
+</html>
