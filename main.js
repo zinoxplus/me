@@ -72,7 +72,7 @@ const tracks = [
   { name: 'sec -1:29- listen✭', url: 'https://raw.githubusercontent.com/zinoxplus/me/main/2200946991.mp3' },
   { name: 'dige love ni ✭',     url: 'https://raw.githubusercontent.com/zinoxplus/me/main/dglvn.mp3' },
  { name: 'LAST TIME - PR★',    url: 'https://raw.githubusercontent.com/zinoxplus/me/main/lhzzz.mp3' },
-{ name: '2BE shak★★>', url: 'https://raw.githubusercontent.com/zinoxplus/me/main/AlizDoBeShak.mp3' },
+{ name: '2BE shak★★>', url: 'https://raw.githubusercontent.com/zinoxplus/me/main/fff1.mp3' },
     { name: 'PiDaR★★>',    url: 'https://raw.githubusercontent.com/zinoxplus/me/main/2393843085.mp3' },
   { name: 'Miri 1:08✭',         url: 'https://raw.githubusercontent.com/zinoxplus/me/main/8b569bc7_e391_4c22_b2d6_e38671697370Miri_140_audio_only_medium.m4a' },
   { name: 'BLOK3 - turk Trend', url: 'https://raw.githubusercontent.com/zinoxplus/me/main/BLOK3%20-%20Napiyosun%20Mesela%20Musics-Fa.mp3' },
