@@ -1,10 +1,7 @@
 "use strict";
 
-/* ══════════════════════════════════
-   XLMC v2 — main.js
-   ══════════════════════════════════ */
 
-// ─── SPOTLIGHT ───────────────────────
+
 (function initSpotlight() {
   const spot = document.getElementById('spotlight');
   if (!spot) return;
@@ -14,7 +11,7 @@
   });
 })();
 
-// ─── WAVEFORM ────────────────────────
+
 const waveCanvas = document.getElementById('waveCanvas');
 const wCtx = waveCanvas ? waveCanvas.getContext('2d') : null;
 let wavePhase = 0, waveActive = false, waveRAF = null;
@@ -36,7 +33,7 @@ function drawWave(playing) {
     const x = i * bw + bw * 0.18;
     const bWidth = bw * 0.58;
     const alpha = playing ? (0.3 + 0.7 * (amp / H)) : 0.18;
-    // Gradient color shift across width
+
     const hue = playing ? (185 + t * 30) : 200;
     wCtx.fillStyle = `hsla(${hue},100%,${playing?62:40}%,${alpha.toFixed(2)})`;
     wCtx.beginPath();
@@ -63,19 +60,19 @@ function stopWave() {
 }
 drawWave(false);
 
-// ─── EQ BARS ─────────────────────────
+
 const eqMini = document.getElementById('eqMini');
 function setEq(on) {
   if (!eqMini) return;
   eqMini.classList.toggle('stopped', !on);
 }
 
-// ─── PLAYLIST DATA ────────────────────
+
 const tracks = [
   { name: 'sec -1:29- listen✭', url: 'https://raw.githubusercontent.com/zinoxplus/me/main/2200946991.mp3' },
   { name: 'dige love ni ✭',     url: 'https://raw.githubusercontent.com/zinoxplus/me/main/dglvn.mp3' },
  { name: 'LAST TIME - PR★',    url: 'https://raw.githubusercontent.com/zinoxplus/me/main/lhzzz.mp3' },
-{ name: '2BE shak★★>', url: 'https://raw.githubusercontent.com/zinoxplus/me/main/Aliz-Do-Be-Shak.mp3' },
+{ name: '2BE shak★★>', url: 'https://raw.githubusercontent.com/zinoxplus/me/main/AlizDoBeShak.mp3' },
     { name: 'PiDaR★★>',    url: 'https://raw.githubusercontent.com/zinoxplus/me/main/2393843085.mp3' },
   { name: 'Miri 1:08✭',         url: 'https://raw.githubusercontent.com/zinoxplus/me/main/8b569bc7_e391_4c22_b2d6_e38671697370Miri_140_audio_only_medium.m4a' },
   { name: 'BLOK3 - turk Trend', url: 'https://raw.githubusercontent.com/zinoxplus/me/main/BLOK3%20-%20Napiyosun%20Mesela%20Musics-Fa.mp3' },
@@ -99,11 +96,11 @@ const tName     = document.getElementById('tName');
 const tMeta     = document.getElementById('tMeta');
 const pList     = document.getElementById('pList');
 
-// ─── STATE ────────────────────────────
+
 let idx = 0, playing = false, shuffle = false, repeat = 0; // 0=none 1=all 2=one
 let mutedPrev = 0.7;
 
-// ─── LOCALSTORAGE ─────────────────────
+
 function save() {
   try {
     localStorage.setItem('xlmc2_idx', idx);
@@ -124,7 +121,7 @@ function load() {
   } catch(_) {}
 }
 
-// ─── TRACK LOAD ───────────────────────
+
 function loadTrack(i, autoplay) {
   if (i < 0) i = tracks.length - 1;
   if (i >= tracks.length) i = 0;
@@ -140,7 +137,7 @@ function loadTrack(i, autoplay) {
   if (autoplay) audio.play().catch(()=>{});
 }
 
-// ─── PLAYLIST RENDER ──────────────────
+
 function renderPlaylist() {
   pList.innerHTML = '';
   tracks.forEach((t, i) => {
@@ -164,7 +161,6 @@ function highlightPlaylist() {
   });
 }
 
-// ─── PLAY / PAUSE ─────────────────────
 function togglePlay() {
   if (!audio.src) loadTrack(idx, false);
   if (playing) {
@@ -179,7 +175,6 @@ function updatePlayBtn() {
   playBtn.innerHTML = playing ? '⏸' : '▶';
 }
 
-// ─── NEXT / PREV ──────────────────────
 function randIdx() {
   let n = Math.floor(Math.random() * tracks.length);
   while (tracks.length > 1 && n === idx) n = Math.floor(Math.random() * tracks.length);
@@ -193,7 +188,7 @@ function prevTrack() {
   loadTrack(shuffle ? randIdx() : (idx - 1 + tracks.length) % tracks.length, playing);
 }
 
-// ─── REPEAT ───────────────────────────
+
 function cycleRepeat() {
   repeat = (repeat + 1) % 3;
   if (reptBtn) {
@@ -203,14 +198,14 @@ function cycleRepeat() {
   save();
 }
 
-// ─── SHUFFLE ──────────────────────────
+
 function toggleShuffle() {
   shuffle = !shuffle;
   if (shuffBtn) shuffBtn.classList.toggle('active', shuffle);
   save();
 }
 
-// ─── MUTE ─────────────────────────────
+
 function toggleMute() {
   if (audio.volume > 0) {
     mutedPrev = audio.volume;
@@ -223,7 +218,7 @@ function toggleMute() {
   save();
 }
 
-// ─── SEEK / VOLUME ────────────────────
+
 function doSeek(v) {
   if (audio.duration) audio.currentTime = (v / 100) * audio.duration;
 }
@@ -234,13 +229,11 @@ function doVolume(v) {
   save();
 }
 
-// ─── TIME FORMAT ──────────────────────
 function fmt(s) {
   if (isNaN(s) || !isFinite(s)) return '0:00';
   return Math.floor(s/60) + ':' + String(Math.floor(s%60)).padStart(2,'0');
 }
 
-// ─── AUDIO EVENTS ─────────────────────
 audio.addEventListener('timeupdate', () => {
   if (!audio.duration) return;
   seekInput.value = (audio.currentTime / audio.duration) * 100;
@@ -261,7 +254,7 @@ audio.addEventListener('ended', () => {
 audio.addEventListener('play',  () => { playing = true;  updatePlayBtn(); });
 audio.addEventListener('pause', () => { playing = false; updatePlayBtn(); });
 
-// ─── KEYBOARD ─────────────────────────
+
 document.addEventListener('keydown', e => {
   if (document.activeElement?.tagName === 'INPUT') return;
   switch(e.key) {
@@ -276,19 +269,19 @@ document.addEventListener('keydown', e => {
   }
 });
 
-// ─── INIT ─────────────────────────────
+
 (function init() {
   load();
   renderPlaylist();
   loadTrack(idx, false);
   audio.volume = +volInput.value || 0.7;
 
-  // restore UI state
+
   if (reptBtn) { reptBtn.textContent = repeat === 2 ? '🔂' : '🔁'; reptBtn.classList.toggle('active', repeat > 0); }
   if (shuffBtn) shuffBtn.classList.toggle('active', shuffle);
   updatePlayBtn();
 
-  // wire controls
+
   playBtn  && playBtn.addEventListener('click', togglePlay);
   prevBtn  && prevBtn.addEventListener('click', prevTrack);
   nextBtn  && nextBtn.addEventListener('click', nextTrack);
@@ -298,7 +291,7 @@ document.addEventListener('keydown', e => {
   seekInput && seekInput.addEventListener('input', e => doSeek(+e.target.value));
   volInput  && volInput.addEventListener('input',  e => doVolume(e.target.value));
 
-  // first-click autoplay
+
   document.addEventListener('click', function once() {
     if (!playing && audio.src) {
       audio.play().catch(()=>{});
