@@ -300,3 +300,158 @@ document.addEventListener('keydown', e => {
     document.removeEventListener('click', once);
   }, { once: true });
 })();
+
+
+/* ─── SUBTLE 3D TILT ON HOVER (panels only, cheap & reduced-motion aware) ─── */
+(function initTilt() {
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduceMotion) return;
+  const targets = document.querySelectorAll('.hero-card, .rank-panel, .stats-panel');
+  const maxTilt = 3.5;
+  targets.forEach(el => {
+    el.addEventListener('mousemove', e => {
+      const r = el.getBoundingClientRect();
+      const px = (e.clientX - r.left) / r.width - 0.5;
+      const py = (e.clientY - r.top) / r.height - 0.5;
+      el.style.transform = `perspective(1000px) rotateX(${(-py * maxTilt).toFixed(2)}deg) rotateY(${(px * maxTilt).toFixed(2)}deg)`;
+      el.classList.add('tilting');
+    });
+    el.addEventListener('mouseleave', () => {
+      el.style.transform = '';
+      el.classList.remove('tilting');
+    });
+  });
+})();
+
+
+/* ─── COLLECTED CARDS — 3D shelf ─── */
+(function cardsShelf() {
+  const shelf = document.getElementById('shelf3d');
+  if (!shelf) return;
+
+  const cards   = Array.from(shelf.querySelectorAll('.mem-card'));
+  const dotsEl  = document.getElementById('shelfDots');
+  const prevBtn = document.getElementById('cardPrev');
+  const nextBtn = document.getElementById('cardNext');
+  const total   = cards.length;
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let active = 0;
+
+  function layout() {
+    cards.forEach((c, i) => {
+      let pos = 'hidden';
+      if (i === active) pos = 'active';
+      else if (i === (active - 1 + total) % total) pos = 'left';
+      else if (i === (active + 1) % total) pos = 'right';
+      c.dataset.pos = pos;
+    });
+    if (dotsEl) {
+      Array.from(dotsEl.children).forEach((d, i) => d.classList.toggle('active', i === active));
+    }
+  }
+
+  function renderDots() {
+    if (!dotsEl) return;
+    dotsEl.innerHTML = '';
+    cards.forEach((_, i) => {
+      const b = document.createElement('button');
+      b.className = 'shelf-dot' + (i === active ? ' active' : '');
+      b.setAttribute('aria-label', 'کارت ' + (i + 1));
+      b.addEventListener('click', () => goTo(i));
+      dotsEl.appendChild(b);
+    });
+  }
+
+  function goTo(i) {
+    const next = (i + total) % total;
+    if (next === active) return;
+    active = next;
+    layout();
+    playAchievementChime();
+  }
+  function next() { goTo(active + 1); }
+  function prev() { goTo(active - 1); }
+
+  prevBtn && prevBtn.addEventListener('click', prev);
+  nextBtn && nextBtn.addEventListener('click', next);
+
+  cards.forEach(c => {
+    c.addEventListener('click', () => {
+      if (c.dataset.pos === 'left') prev();
+      else if (c.dataset.pos === 'right') next();
+    });
+  });
+
+  // swipe / drag to flip through the shelf
+  let startX = null;
+  shelf.addEventListener('pointerdown', e => { startX = e.clientX; });
+  shelf.addEventListener('pointerup', e => {
+    if (startX === null) return;
+    const dx = e.clientX - startX;
+    if (Math.abs(dx) > 40) { dx < 0 ? next() : prev(); }
+    startX = null;
+  });
+
+  layout();
+  renderDots();
+
+  // ── lightweight ambient particles, themed per card ──
+  if (!reduceMotion) {
+    cards.forEach(c => {
+      const layer = c.querySelector('.particle-layer');
+      if (!layer) return;
+      const type = c.classList.contains('theme-tough') ? 'ember'
+                 : c.classList.contains('theme-tired') ? 'dust' : 'snow';
+      const count = type === 'snow' ? 14 : 10;
+      const frag = document.createDocumentFragment();
+      for (let i = 0; i < count; i++) {
+        const s = document.createElement('span');
+        s.className = 'p';
+        const left = Math.random() * 100;
+        const delay = (Math.random() * 6).toFixed(2);
+        const dur = type === 'ember' ? (2.2 + Math.random() * 1.6).toFixed(2)
+                  : type === 'dust'  ? (4 + Math.random() * 3).toFixed(2)
+                  : (5 + Math.random() * 4).toFixed(2);
+        const size = type === 'ember' ? (2 + Math.random() * 2).toFixed(1) : (2 + Math.random() * 2.5).toFixed(1);
+        s.style.left = left + '%';
+        s.style.animationName = type === 'ember' ? 'emberRise' : type === 'dust' ? 'dustDrift' : 'snowFall';
+        s.style.animationDelay = delay + 's';
+        s.style.animationDuration = dur + 's';
+        s.style.width = size + 'px';
+        s.style.height = size + 'px';
+        frag.appendChild(s);
+      }
+      layer.appendChild(frag);
+    });
+  }
+
+  // ── soft, calm "achievement" chime — synthesized, no audio file needed ──
+  let actx = null;
+  function playAchievementChime() {
+    if (reduceMotion) return;
+    try {
+      actx = actx || new (window.AudioContext || window.webkitAudioContext)();
+      if (actx.state === 'suspended') actx.resume();
+      const now = actx.currentTime;
+      const notes = [523.25, 659.25]; // soft ascending interval (C5 → E5), calm not triumphant
+      notes.forEach((freq, i) => {
+        const osc    = actx.createOscillator();
+        const gain   = actx.createGain();
+        const filter = actx.createBiquadFilter();
+        filter.type = 'lowpass';
+        filter.frequency.value = 2000;
+        osc.type = 'sine';
+        osc.frequency.value = freq;
+        const t0 = now + i * 0.13;
+        gain.gain.setValueAtTime(0, t0);
+        gain.gain.linearRampToValueAtTime(0.12, t0 + 0.04);
+        gain.gain.exponentialRampToValueAtTime(0.0001, t0 + 1.1);
+        osc.connect(filter);
+        filter.connect(gain);
+        gain.connect(actx.destination);
+        osc.start(t0);
+        osc.stop(t0 + 1.2);
+      });
+    } catch (_) {}
+  }
+})();
