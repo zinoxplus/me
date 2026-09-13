@@ -80,7 +80,7 @@ const tracks = [
   { name: 'SAD PLUS +',         url: 'https://raw.githubusercontent.com/zinoxplus/me/main/LLLH.mp3' }
 ];
 
-// ─── DOM REFS ─────────────────────────
+
 const audio     = new Audio();
 const playBtn   = document.getElementById('playBtn');
 const prevBtn   = document.getElementById('prevBtn');
@@ -97,7 +97,7 @@ const tMeta     = document.getElementById('tMeta');
 const pList     = document.getElementById('pList');
 
 
-let idx = 0, playing = false, shuffle = false, repeat = 0; // 0=none 1=all 2=one
+let idx = 0, playing = false, shuffle = false, repeat = 0; 
 let mutedPrev = 0.7;
 
 
@@ -308,13 +308,12 @@ document.addEventListener('keydown', e => {
   volInput  && volInput.addEventListener('input',  e => doVolume(e.target.value));
 
 
-  // The music player is isolated from the card shelf.
-  // A generic page click must never start the music accidentally.
+ 
   document.addEventListener('click', e => {
     if (e.target.closest('.cards-section')) return;
   }, true);
 
-  // Also stop pointer/click bubbling from the shelf before it reaches unrelated handlers.
+
   const cardsSection = document.querySelector('.cards-section');
   if (cardsSection) {
     cardsSection.addEventListener('click', e => e.stopPropagation());
@@ -323,7 +322,7 @@ document.addEventListener('keydown', e => {
 })();
 
 
-/* ─── SUBTLE 3D TILT ON HOVER (panels only, cheap & reduced-motion aware) ─── */
+
 (function initTilt() {
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (reduceMotion) return;
@@ -345,7 +344,7 @@ document.addEventListener('keydown', e => {
 })();
 
 
-/* ─── COLLECTED CARDS — 3D shelf ─── */
+
 (function cardsShelf() {
   const shelf = document.getElementById('shelf3d');
   if (!shelf) return;
@@ -404,7 +403,7 @@ document.addEventListener('keydown', e => {
     });
   });
 
-  // swipe / drag to flip through the shelf
+
   let startX = null;
   shelf.addEventListener('pointerdown', e => { startX = e.clientX; });
   shelf.addEventListener('pointerup', e => {
@@ -417,7 +416,7 @@ document.addEventListener('keydown', e => {
   layout();
   renderDots();
 
-  // ── lightweight ambient particles, themed per card ──
+
   if (!reduceMotion) {
     cards.forEach(c => {
       const layer = c.querySelector('.particle-layer');
@@ -447,8 +446,8 @@ document.addEventListener('keydown', e => {
     });
   }
 
-  // ── isolated card transition sounds ──
-  // Card navigation owns these audio objects. They never touch the music player.
+
+  
   const achievementAudio = new Audio('https://raw.githubusercontent.com/zinoxplus/me/main/dsdsdsdr.mp3');
   const endCardAudio = new Audio('https://raw.githubusercontent.com/zinoxplus/me/main/yuyuyuyu.mp3');
   achievementAudio.preload = 'auto';
@@ -513,7 +512,7 @@ document.addEventListener('keydown', e => {
         return;
       } catch (_) {}
     }
-    // Do not use the music player's audio as a fallback.
+  
     playSynthChime();
   }
 
