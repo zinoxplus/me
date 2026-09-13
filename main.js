@@ -164,11 +164,27 @@ function highlightPlaylist() {
 function togglePlay() {
   if (!audio.src) loadTrack(idx, false);
   if (playing) {
-    audio.pause(); playing = false; stopWave(); setEq(false);
+    audio.pause();
+    playing = false;
+    stopWave();
+    setEq(false);
+    updatePlayBtn();
+    save();
   } else {
-    audio.play().catch(()=>{}); playing = true; startWave(); setEq(true);
+    const p = audio.play();
+    if (p && p.then) {
+      p.then(() => {
+        playing = true;
+        startWave();
+        setEq(true);
+        updatePlayBtn();
+        save();
+      }).catch(() => {
+        playing = false;
+        updatePlayBtn();
+      });
+    }
   }
-  updatePlayBtn(); save();
 }
 function updatePlayBtn() {
   if (!playBtn) return;
@@ -292,14 +308,18 @@ document.addEventListener('keydown', e => {
   volInput  && volInput.addEventListener('input',  e => doVolume(e.target.value));
 
 
-  document.addEventListener('click', function onceUnlock(e) {
-    if (e.target.closest('.cards-section')) return; // card clicks must never trigger the music player
-    if (!playing && audio.src) {
-      audio.play().catch(()=>{});
-      playing = true; updatePlayBtn(); startWave(); setEq(true);
-    }
-    document.removeEventListener('click', onceUnlock);
-  });
+  // The music player is isolated from the card shelf.
+  // A generic page click must never start the music accidentally.
+  document.addEventListener('click', e => {
+    if (e.target.closest('.cards-section')) return;
+  }, true);
+
+  // Also stop pointer/click bubbling from the shelf before it reaches unrelated handlers.
+  const cardsSection = document.querySelector('.cards-section');
+  if (cardsSection) {
+    cardsSection.addEventListener('click', e => e.stopPropagation());
+    cardsSection.addEventListener('pointerup', e => e.stopPropagation());
+  }
 })();
 
 
@@ -368,7 +388,8 @@ document.addEventListener('keydown', e => {
     if (next === active) return;
     active = next;
     layout();
-    playAchievementChime();
+    if (cards[active]?.classList.contains('theme-end')) playEndCardSound();
+    else playAchievementChime();
   }
   function next() { goTo(active + 1); }
   function prev() { goTo(active - 1); }
@@ -426,13 +447,19 @@ document.addEventListener('keydown', e => {
     });
   }
 
-  // ── "achievement" sound — plays the project's own dsdsdsdr.mp3, ──
-  // ── falling back to a tiny synthesized chime only if that file can't load ──
+  // ── isolated card transition sounds ──
+  // Card navigation owns these audio objects. They never touch the music player.
   const achievementAudio = new Audio('https://raw.githubusercontent.com/zinoxplus/me/main/dsdsdsdr.mp3');
+  const endCardAudio = new Audio('https://raw.githubusercontent.com/zinoxplus/me/main/yuyuyuyu.mp3');
   achievementAudio.preload = 'auto';
+  endCardAudio.preload = 'auto';
   achievementAudio.volume = 0.55;
+  endCardAudio.volume = 0.62;
+
   let achievementFileOk = true;
+  let endCardFileOk = true;
   achievementAudio.addEventListener('error', () => { achievementFileOk = false; });
+  endCardAudio.addEventListener('error', () => { endCardFileOk = false; });
 
   let actx = null;
   function playSynthChime() {
@@ -441,10 +468,10 @@ document.addEventListener('keydown', e => {
       actx = actx || new (window.AudioContext || window.webkitAudioContext)();
       if (actx.state === 'suspended') actx.resume();
       const now = actx.currentTime;
-      const notes = [523.25, 659.25]; // soft ascending interval (C5 → E5), calm not triumphant
+      const notes = [523.25, 659.25];
       notes.forEach((freq, i) => {
-        const osc    = actx.createOscillator();
-        const gain   = actx.createGain();
+        const osc = actx.createOscillator();
+        const gain = actx.createGain();
         const filter = actx.createBiquadFilter();
         filter.type = 'lowpass';
         filter.frequency.value = 2000;
@@ -471,8 +498,23 @@ document.addEventListener('keydown', e => {
         const p = achievementAudio.play();
         if (p && p.catch) p.catch(() => playSynthChime());
         return;
-      } catch (_) { /* fall through */ }
+      } catch (_) {}
     }
     playSynthChime();
   }
+
+  function playEndCardSound() {
+    if (reduceMotion) return;
+    if (endCardFileOk) {
+      try {
+        endCardAudio.currentTime = 0;
+        const p = endCardAudio.play();
+        if (p && p.catch) p.catch(() => {});
+        return;
+      } catch (_) {}
+    }
+    // Do not use the music player's audio as a fallback.
+    playSynthChime();
+  }
+
 })();
