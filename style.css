@@ -1,12 +1,8 @@
-/* ═══════════════════════════════════════════
-   XLMC v2 — Gaming Profile
-   Design: HUD / Tactical Overlay aesthetic
-   Palette: Deep navy + electric cyan + hot amber
-   ═══════════════════════════════════════════ */
+
 
 @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Orbitron:wght@400;600;700;900&family=Inter:wght@300;400;500&display=swap');
 
-/* ─── RESET & TOKENS ─── */
+
 *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
 
 :root {
@@ -40,7 +36,7 @@ body {
   overflow-x: hidden;
 }
 
-/* Respect people who've asked for less motion */
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.001ms !important;
@@ -49,7 +45,7 @@ body {
   }
 }
 
-/* ─── BACKGROUND GRID ─── */
+
 .bg-grid {
   position: fixed; inset: 0; z-index: 0; pointer-events: none;
   background-image:
@@ -70,7 +66,7 @@ body {
   transition: opacity 0.15s;
 }
 
-/* ─── LAYOUT ─── */
+
 .site-wrap {
   position: relative; z-index: 2;
   min-height: 100vh;
@@ -78,7 +74,7 @@ body {
   display: flex; flex-direction: column; align-items: center; gap: 20px;
 }
 
-/* ─── TOP HEADER BAR ─── */
+
 .topbar {
   width: 100%; max-width: 1180px;
   display: flex; align-items: center; justify-content: space-between;
@@ -114,7 +110,7 @@ body {
   border-radius: 3px;
 }
 
-/* ─── MAIN GRID ─── */
+
 .main-grid {
   width: 100%; max-width: 1180px;
   display: grid;
@@ -123,7 +119,7 @@ body {
   gap: 16px;
 }
 
-/* ─── GLASS PANEL BASE ─── */
+
 .gpanel {
   background: var(--panel);
   border: 1px solid var(--border);
@@ -143,7 +139,7 @@ body {
 }
 .gpanel.tilting { box-shadow: var(--depth), 0 0 32px rgba(0,220,255,0.08); }
 
-/* ─── CORNER CUTS (CS2 Style) ─── */
+
 .corner-cut {
   position: relative;
 }
@@ -157,9 +153,7 @@ body {
   pointer-events: none;
 }
 
-/* ════════════════════
-   HERO CARD (left col, spans 2 rows)
-   ════════════════════ */
+
 .hero-card {
   grid-column: 1;
   grid-row: 1 / 3;
@@ -214,7 +208,7 @@ body {
   text-transform: uppercase;
 }
 
-/* STAT ROWS */
+
 .stat-rows { display: flex; flex-direction: column; gap: 8px; }
 .stat-row {
   display: flex; align-items: center; justify-content: space-between;
@@ -238,7 +232,7 @@ body {
 .stat-row-val.cyan  { color: var(--cyan); }
 .stat-row-val.amber { color: var(--amber); }
 
-/* SOCIAL LINKS */
+
 .social-links { display: flex; flex-direction: column; gap: 8px; }
 .social-link {
   display: flex; align-items: center; gap: 12px;
@@ -263,7 +257,7 @@ body {
 }
 .social-arrow { color: var(--muted); font-size: 0.75rem; }
 
-/* STEAM BUTTON */
+
 .steam-btn {
   display: flex; align-items: center; justify-content: center; gap: 10px;
   padding: 13px 20px;
@@ -289,9 +283,7 @@ body {
 .steam-btn:hover::before { transform: translateX(100%); }
 .steam-btn:hover { box-shadow: 0 0 24px rgba(0,220,255,0.3); }
 
-/* ════════════════════
-   RANK PANEL (top center)
-   ════════════════════ */
+
 .rank-panel {
   grid-column: 2;
   grid-row: 1;
@@ -356,7 +348,7 @@ body {
   color: var(--amber);
 }
 
-/* PROGRESS BAR */
+
 .progress-label {
   display: flex; justify-content: space-between;
   font-family: 'Rajdhani', sans-serif;
@@ -376,7 +368,7 @@ body {
 }
 @keyframes fillSlide { from {width:0} }
 
-/* MINI KPI ROW */
+
 .kpi-row {
   display: grid; grid-template-columns: repeat(3,1fr);
   gap: 10px; margin-top: 18px;
@@ -403,9 +395,7 @@ body {
   display: block; margin-top: 4px;
 }
 
-/* ════════════════════
-   STATS PANEL (bottom center)
-   ════════════════════ */
+
 .stats-panel {
   grid-column: 2;
   grid-row: 2;
@@ -413,7 +403,7 @@ body {
   border-bottom: 2px solid rgba(0,220,255,0.4);
 }
 
-/* HORIZONTAL BAR CHART */
+
 .bar-chart { display: flex; flex-direction: column; gap: 10px; }
 .bar-item { display: flex; align-items: center; gap: 12px; }
 .bar-name {
@@ -442,7 +432,7 @@ body {
   color: var(--text); width: 45px; flex-shrink: 0;
 }
 
-/* MINI HEXGRID BADGES */
+
 .badge-grid {
   display: flex; gap: 8px; flex-wrap: wrap; margin-top: 18px;
 }
@@ -462,9 +452,6 @@ body {
   width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0;
 }
 
-/* ════════════════════
-   MUSIC PLAYER (right col, spans 2 rows)
-   ════════════════════ */
 .player-col {
   grid-column: 3;
   grid-row: 1 / 3;
@@ -474,7 +461,7 @@ body {
   border-right: 1px solid rgba(0,220,255,0.1);
 }
 
-/* NOW PLAYING */
+
 .np-header {
   display: flex; align-items: center; gap: 10px;
 }
@@ -498,7 +485,7 @@ body {
 @keyframes eqPulse { from{height:3px} to{height:12px} }
 .eq-mini.stopped .eq-bar { animation-play-state: paused; height: 3px; }
 
-/* WAVEFORM */
+
 .wave-container {
   width: 100%; height: 44px;
   background: rgba(0,0,0,0.35);
@@ -508,7 +495,7 @@ body {
 }
 #waveCanvas { display:block; width:100%; height:100%; }
 
-/* TRACK INFO */
+
 .track-info {}
 .track-name {
   font-family: 'Rajdhani', sans-serif;
@@ -523,7 +510,7 @@ body {
   font-family: 'Rajdhani', sans-serif;
 }
 
-/* SEEK */
+
 .seek-row {
   display: flex; align-items: center; gap: 9px;
 }
@@ -547,7 +534,7 @@ body {
 }
 .seek-input::-webkit-slider-thumb:hover { transform: scale(1.3); }
 
-/* CONTROLS */
+
 .controls {
   display: flex; align-items: center; justify-content: center; gap: 6px;
 }
@@ -572,7 +559,7 @@ body {
 }
 .ctrl.play-btn:hover { background: rgba(0,220,255,0.2); box-shadow: 0 0 20px rgba(0,220,255,0.3); }
 
-/* VOLUME ROW */
+/* last debug */
 .vol-row {
   display: flex; align-items: center; gap: 8px;
 }
@@ -587,7 +574,7 @@ body {
   background: var(--cyan-dim); border-radius:50%;
 }
 
-/* PLAYLIST */
+
 .playlist-label {
   font-family: 'Rajdhani', sans-serif;
   font-size: 10px; font-weight: 600; letter-spacing: 3px;
@@ -634,9 +621,7 @@ body {
 }
 .ptrack.active .ptrack-dot { opacity: 1; }
 
-/* ════════════════════
-   COLLECTED CARDS — 3D shelf
-   ════════════════════ */
+
 .cards-section {
   width: 100%; max-width: 1180px;
   padding: 24px 24px 30px;
@@ -691,7 +676,7 @@ body {
   border: 1px solid;
 }
 
-/* animated frame ring — themed per card via custom properties */
+
 @property --frame-angle {
   syntax: '<angle>';
   inherits: false;
@@ -745,7 +730,7 @@ body {
 .particle-layer { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 1; }
 .p { position: absolute; top: 100%; border-radius: 50%; }
 
-/* ── Card 1: سرسختی / Toughness ── */
+
 .theme-tough {
   clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14px 100%, 0 calc(100% - 14px));
 }
@@ -785,7 +770,7 @@ body {
   100% { transform: translateY(-370px) translateX(14px); opacity: 0; }
 }
 
-/* ── Card 2: خسته / Tired ── */
+
 .theme-tired .mem-card-inner {
   border-radius: 18px;
   background: linear-gradient(160deg, #0d1826 0%, #070c15 70%, #05080f 100%);
@@ -824,7 +809,7 @@ body {
   100% { transform: translateY(-330px) translateX(6px); opacity: 0; }
 }
 
-/* ── Card 3: THE END / نه‌چیز ── */
+
 .theme-end .mem-card-inner {
   border-radius: 22px;
   background: linear-gradient(160deg, #14151a 0%, #0a0a0d 70%, #050505 100%);
@@ -877,7 +862,7 @@ body {
   .shelf-nav { width: 34px; height: 34px; }
 }
 
-/* ─── RESPONSIVE ─── */
+
 @media (max-width: 1100px) {
   .main-grid {
     grid-template-columns: 300px 1fr 280px;
@@ -904,11 +889,7 @@ body {
   .kpi-row { grid-template-columns: repeat(3,1fr); }
 }
 
-/* ═══════════════════════════════════════════════════════════════
-   XLMC VISUAL REFRESH — DARK GRAPHIC / PREMIUM GAME PROFILE
-   Keeps the original layout, content and component behavior.
-   This layer intentionally removes the HUD/cyberpunk look.
-   ═══════════════════════════════════════════════════════════════ */
+
 
 :root {
   --bg: #070709;
@@ -1065,7 +1046,7 @@ body {
 .ptrack.active .ptrack-name { color: #e9e8e4; }
 .ptrack-dot { background: #d7c29d; box-shadow: 0 0 9px rgba(229,182,107,.35); }
 
-/* ═══ COLLECTED CARDS — each card is its own visual world ═══ */
+
 .cards-section {
   padding: 28px 24px 34px;
   border-top: 1px solid rgba(255,255,255,.1);
@@ -1095,7 +1076,7 @@ body {
 .mem-card-tag { backdrop-filter: blur(8px); }
 .mem-card-quote { font-size:.86rem; line-height:1.85; }
 
-/* TOUGHNESS — forged / ember / worn metal */
+
 .theme-tough { clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 18px 100%, 0 calc(100% - 18px)); }
 .theme-tough .mem-card-inner {
   background:
@@ -1116,7 +1097,7 @@ body {
 .theme-tough .mem-card-tag { color:#e1b989; background:rgba(180,105,45,.1); border-color:rgba(220,145,78,.24); }
 .theme-tough .p { background: radial-gradient(circle,#fff0c8 0%,#db7131 45%,transparent 75%); }
 
-/* TIRED — faded paper / cold glass / soft dust */
+
 .theme-tired .mem-card-inner {
   background:
     linear-gradient(135deg, rgba(255,255,255,.045), transparent 35%),
@@ -1133,7 +1114,7 @@ body {
 .theme-tired .mem-card-tag { color:#b8bdc6; background:rgba(255,255,255,.035); border-color:rgba(255,255,255,.1); }
 .theme-tired .p { background:rgba(220,225,232,.55); box-shadow:0 0 7px rgba(220,225,232,.28); }
 
-/* THE END — monochrome / gallery / silence */
+
 .theme-end .mem-card-inner {
   background:
     radial-gradient(180px 150px at 50% 45%, rgba(255,255,255,.035), transparent 72%),
@@ -1166,7 +1147,7 @@ body {
 .shelf-dot { background:#4c4c54; }
 .shelf-dot.active { background:#ddd; box-shadow:0 0 12px rgba(255,255,255,.18); }
 
-/* Keep card effects self-contained and never leak into other components. */
+
 .cards-section, .cards-section * { --component-scope: cards; }
 .cards-section .mem-card { contain: layout paint style; }
 
