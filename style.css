@@ -691,6 +691,25 @@ body {
   border: 1px solid;
 }
 
+/* animated frame ring — themed per card via custom properties */
+@property --frame-angle {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+.mem-card-inner::before {
+  content: '';
+  position: absolute; inset: -3px;
+  border-radius: inherit;
+  padding: 2px;
+  background: conic-gradient(from var(--frame-angle, 0deg), var(--frame-a, transparent), var(--frame-b, transparent), var(--frame-a, transparent));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+  pointer-events: none;
+  z-index: 0;
+}
+
 .mem-card-top {
   display: flex; align-items: flex-start; justify-content: space-between;
   position: relative; z-index: 2;
@@ -733,12 +752,19 @@ body {
 .theme-tough .mem-card-inner {
   background: linear-gradient(160deg, #2a0d05 0%, #160502 60%, #0d0301 100%);
   border-color: rgba(255,120,30,0.55);
-  box-shadow: 0 0 46px rgba(255,80,0,0.25), inset 0 0 60px rgba(255,60,0,0.08);
-  animation: toughFlicker 3.4s ease-in-out infinite;
+  box-shadow: 0 0 60px rgba(255,80,0,0.32), inset 0 0 70px rgba(255,60,0,0.1);
+  animation: toughFlicker 2.6s ease-in-out infinite;
+  --frame-a: #ff6a00;
+  --frame-b: #ffe6b8;
 }
+.theme-tough .mem-card-inner::before {
+  animation: frameSpin 2.8s linear infinite, frameGlowTough 2.6s ease-in-out infinite;
+}
+@keyframes frameSpin { to { --frame-angle: 360deg; } }
+@keyframes frameGlowTough { 0%,100% { filter: drop-shadow(0 0 6px rgba(255,110,0,0.5)); } 50% { filter: drop-shadow(0 0 14px rgba(255,150,40,0.8)); } }
 @keyframes toughFlicker {
-  0%,100% { box-shadow: 0 0 46px rgba(255,80,0,0.25), inset 0 0 60px rgba(255,60,0,0.08); }
-  50%     { box-shadow: 0 0 58px rgba(255,110,0,0.35), inset 0 0 70px rgba(255,80,0,0.12); }
+  0%,100% { box-shadow: 0 0 56px rgba(255,80,0,0.3), inset 0 0 66px rgba(255,60,0,0.1); }
+  50%     { box-shadow: 0 0 74px rgba(255,120,0,0.42), inset 0 0 80px rgba(255,90,0,0.16); }
 }
 .theme-tough .mem-card-count { color: rgba(255,170,90,0.7); }
 .theme-tough .mem-card-tag { color: #ffb37a; background: rgba(255,110,0,0.12); border: 1px solid rgba(255,140,40,0.35); }
@@ -766,10 +792,17 @@ body {
   border-color: rgba(130,160,200,0.32);
   box-shadow: 0 0 34px rgba(110,150,200,0.16);
   animation: tiredBreathe 4.6s ease-in-out infinite;
+  --frame-angle: 220deg;
+  --frame-a: rgba(140,175,215,0.65);
+  --frame-b: rgba(60,80,110,0.08);
 }
+.theme-tired .mem-card-inner::before {
+  animation: frameBreathe 4.6s ease-in-out infinite;
+}
+@keyframes frameBreathe { 0%,100% { opacity: 0.35; } 50% { opacity: 0.95; } }
 @keyframes tiredBreathe {
   0%,100% { box-shadow: 0 0 30px rgba(110,150,200,0.14); transform: scale(1); }
-  50%     { box-shadow: 0 0 42px rgba(140,175,210,0.22); transform: scale(1.008); }
+  50%     { box-shadow: 0 0 46px rgba(140,175,210,0.26); transform: scale(1.01); }
 }
 .theme-tired .mem-card-count { color: rgba(150,175,205,0.65); }
 .theme-tired .mem-card-tag { color: #a9c3de; background: rgba(120,150,190,0.1); border: 1px solid rgba(140,165,200,0.28); }
@@ -797,7 +830,14 @@ body {
   background: linear-gradient(160deg, #14151a 0%, #0a0a0d 70%, #050505 100%);
   border-color: rgba(230,230,235,0.16);
   box-shadow: 0 0 26px rgba(220,220,230,0.08);
+  --frame-angle: 90deg;
+  --frame-a: rgba(255,255,255,0.4);
+  --frame-b: rgba(255,255,255,0.02);
 }
+.theme-end .mem-card-inner::before {
+  animation: frameFade 7s ease-in-out infinite;
+}
+@keyframes frameFade { 0%,100% { opacity: 0.18; } 50% { opacity: 0.5; } }
 .theme-end .mem-card-count { color: rgba(200,200,208,0.55); }
 .theme-end .mem-card-tag { color: #cfcfd8; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.14); }
 .theme-end .mem-card-title {
