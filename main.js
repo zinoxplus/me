@@ -292,13 +292,14 @@ document.addEventListener('keydown', e => {
   volInput  && volInput.addEventListener('input',  e => doVolume(e.target.value));
 
 
-  document.addEventListener('click', function once() {
+  document.addEventListener('click', function onceUnlock(e) {
+    if (e.target.closest('.cards-section')) return; // card clicks must never trigger the music player
     if (!playing && audio.src) {
       audio.play().catch(()=>{});
       playing = true; updatePlayBtn(); startWave(); setEq(true);
     }
-    document.removeEventListener('click', once);
-  }, { once: true });
+    document.removeEventListener('click', onceUnlock);
+  });
 })();
 
 
@@ -402,7 +403,7 @@ document.addEventListener('keydown', e => {
       if (!layer) return;
       const type = c.classList.contains('theme-tough') ? 'ember'
                  : c.classList.contains('theme-tired') ? 'dust' : 'snow';
-      const count = type === 'snow' ? 14 : 10;
+      const count = type === 'snow' ? 20 : type === 'ember' ? 16 : 16;
       const frag = document.createDocumentFragment();
       for (let i = 0; i < count; i++) {
         const s = document.createElement('span');
@@ -425,9 +426,16 @@ document.addEventListener('keydown', e => {
     });
   }
 
-  // ── soft, calm "achievement" chime — synthesized, no audio file needed ──
+  // ── "achievement" sound — plays the project's own dsdsdsdr.mp3, ──
+  // ── falling back to a tiny synthesized chime only if that file can't load ──
+  const achievementAudio = new Audio('https://raw.githubusercontent.com/zinoxplus/me/main/dsdsdsdr.mp3');
+  achievementAudio.preload = 'auto';
+  achievementAudio.volume = 0.55;
+  let achievementFileOk = true;
+  achievementAudio.addEventListener('error', () => { achievementFileOk = false; });
+
   let actx = null;
-  function playAchievementChime() {
+  function playSynthChime() {
     if (reduceMotion) return;
     try {
       actx = actx || new (window.AudioContext || window.webkitAudioContext)();
@@ -453,5 +461,18 @@ document.addEventListener('keydown', e => {
         osc.stop(t0 + 1.2);
       });
     } catch (_) {}
+  }
+
+  function playAchievementChime() {
+    if (reduceMotion) return;
+    if (achievementFileOk) {
+      try {
+        achievementAudio.currentTime = 0;
+        const p = achievementAudio.play();
+        if (p && p.catch) p.catch(() => playSynthChime());
+        return;
+      } catch (_) { /* fall through */ }
+    }
+    playSynthChime();
   }
 })();
